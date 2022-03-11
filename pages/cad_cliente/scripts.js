@@ -87,7 +87,7 @@ $(document).ready(function () {
     let email = localStorage.getItem("usuario");
 
     $.ajax({
-        url: `../../api/cliente/index.php?funcao=verificaPermissao&email=${email}`,
+        url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
         method: "get",
         dataType: "JSON",
         success: function (data) {

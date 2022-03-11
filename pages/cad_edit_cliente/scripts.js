@@ -3,12 +3,14 @@ var idEnderecoClicado;
 //no carregar da tela, alimenta os input com os dados do banco de dados
 $(document).ready(async function () {
 
-    const urlParams = new URLSearchParams(window.location.search);
-    idCliente = urlParams.get('id');
+    const parametrosURL = new URLSearchParams(window.location.search);
+    idCliente = parametrosURL.get('id');
     let email = localStorage.getItem('usuario')
+    if (parametrosURL.get('sucesso')) toastPersonalizado("Cadastro atualizado com sucesso", "sucesso");
+    if (parametrosURL.get('sucessoEndereco')) toastPersonalizado("Endereço removido com sucesso", "sucesso");
 
     $.ajax({
-        url: `../../api/cliente/index.php?funcao=verificaPermissao&email=${email}`,
+        url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
         method: "get",
         dataType: 'JSON',
         success: function (data) {
@@ -44,40 +46,31 @@ $(document).ready(async function () {
 //atualiza ativo do endereço do cliente do banco de dados
 $("#remove-address-client").on("click", async (e) => {
 
-    $.ajax({
+    const response = await $.ajax({
         url: '../../api/endereco/index.php',
         type: "PUT",
         dataType: 'JSON',
         data: {
             funcao: 'atualizarAtivoEnderecoCliente',
             idEndCli: idEnderecoClicado
-        },
-        success: function (data) {
-            if (data.adm) {
-                $("#nav-tabs").append(`
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
-                </li>
-                `)
-            }
-        },
-        error: function (xhr) {
-            console.log("erro");
-            console.log(xhr);
         }
     });
 
-    location.reload()
+    if (response.atualizado) {
+        window.location += "&sucessoEndereco=true";
+    } else {
+        window.location += "&sucessoEndereco=false";
+    }
 })
 
 //atualiza dados do cliente
-$("#btn-update-client").on("click", (e) => {
+$("#btn-update-client").on("click", async (e) => {
     //pega o id do cliente pela url
     e.preventDefault();
-    const urlParams = new URLSearchParams(window.location.search);
-    const idCliente = urlParams.get('id');
+    const parametrosURL = new URLSearchParams(window.location.search);
+    const idCliente = parametrosURL.get('id');
 
-    $.ajax({
+    const response = await $.ajax({
         url: '../../api/cliente/index.php',
         type: "PUT",
         dataType: 'JSON',
@@ -91,20 +84,18 @@ $("#btn-update-client").on("click", (e) => {
             telefone2: document.getElementById('telefone2').value.replace(/[()-]/gi, ''),
             data_nascimento: document.getElementById('data_nascimento').value,
             idCliente: idCliente
-        },
-        success: function (response) {
-            console.log(response)
-        },
-        error: function (xhr) {
-            console.log("erro");
-            console.log(xhr);
         }
     });
+
+    if (response.atualizado) {
+        window.location = `?sucesso=true&id=${idCliente}`;
+    } else {
+        window.location = `?sucesso=false&id=${idCliente}`;
+    }
 });
 
 //atualiza endereço do cliente
 $("#alter-address-client").on('click', (e) => {
-
     $.ajax({
         url: '../../api/endereco/index.php',
         type: "PUT",
@@ -129,7 +120,6 @@ $("#alter-address-client").on('click', (e) => {
             //console.log(xhr);
         }
     });
-    location.reload();
 })
 
 //insere endereços na tela
@@ -175,18 +165,7 @@ const updateFrontEndEndereco = (enderecos) => {
 //seleciona o id do endereço do cliente a ser apagado apos confirmação
 const removeEnderecoCliente = async (elementoClicado, principal) => {
     if (principal) {
-        Toastify({
-            text: "Não pode remover o endereco principal!",
-            duration: 5000,
-            newWindow: true,
-            close: true,
-            gravity: "top",
-            position: "center",
-            stopOnFocus: true,
-            style: {
-                background: "#F44336",
-            },
-        }).showToast();
+        toastPersonalizado("Não pode remover o endereço principal", "aviso")
         return
     }
 
@@ -210,27 +189,24 @@ const alteraEndCliente = (endereco) => {
     document.getElementById("checkbox-endereco-principal").checked = endereco.principal;
 }
 
-const verificaPermissao = () => {
-    $.ajax({
-        url: `../../api/permissao/index.php?funcao=permissoes`,
-        method: "get", //send it through get method,
-        dataType: 'JSON',
-        success: function (response) {
-
-            //verifica permissão de editar, se não esconde botões
-            if (response[0]['editar'] == 0) {
-                document.getElementById('btn-edit').setAttribute('hidden', '')
-                document.getElementById('btn-update-client').setAttribute('hidden', '')
-                document.getElementById('new-address').setAttribute('hidden', '')
-            }
-            if (response[0]['excluir'] == 0) {
-                document.getElementById('btn-delete').setAttribute('hidden', '')
-            }
-
-        },
-        error: function (xhr) {
-            console.log("erro")
-            console.log(xhr)
-        }
+const verificaPermissao = async () => {
+    let email = localStorage.getItem('usuario')
+    const response = await $.ajax({
+        url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
+        method: "GET",
+        dataType: "JSON"
     });
+
+    console.log(response)
+
+    //verifica permissão de editar, se não esconde botões
+    if (!response.editar) {
+        document.getElementById("btn-edit").setAttribute("hidden", "")
+        document.getElementById("btn-update-client").setAttribute("hidden", "")
+        document.getElementById("new-address").setAttribute("hidden", "")
+    }
+    if (!response.excluir) {
+        document.getElementById("btn-delete").setAttribute("hidden", "")
+    }
+
 }

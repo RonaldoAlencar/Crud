@@ -102,17 +102,6 @@ if ($_GET['funcao'] === 'listaClientes') {
     echo json_encode($rows);
 }
 
-if ($_GET['funcao'] == 'verificaPermissao') {
-
-    $email = $_GET['email'];
-
-    $sql = "SELECT excluir, editar, cadastrar, adm FROM usuario WHERE email = '$email'";
-    $dados = $conn->query($sql);
-    $permissao = $dados->fetchAll();
-
-    echo json_encode($permissao[0]);
-}
-
 if ($_GET['funcao'] == 'listaUsuarios') {
 
     $sql = "SELECT * FROM usuario";

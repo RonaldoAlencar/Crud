@@ -7,7 +7,7 @@ $(document).ready(function () {
 
   //busca permissões do usuario
   $.ajax({
-    url: `../../api/cliente/index.php?funcao=verificaPermissao&email=${email}`,
+    url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
     method: "get",
     dataType: 'JSON',
     success: function (data) {

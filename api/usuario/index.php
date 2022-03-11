@@ -3,6 +3,19 @@ include "../conection/index.php";
 header("Content-Type: application/json");
 $method = $_SERVER["REQUEST_METHOD"];
 
+####################################### GET ####################################### 
+
+if ($_GET['funcao'] == 'verificaPermissao') {
+
+    $email = $_GET['email'];
+
+    $sql = "SELECT excluir, editar, cadastrar, adm FROM usuario WHERE email = '$email'";
+    $dados = $conn->query($sql);
+    $permissao = $dados->fetchAll();
+
+    echo json_encode($permissao[0]);
+}
+
 ####################################### POST ####################################### 
 if ($_POST['funcao'] == 'logar') {
 

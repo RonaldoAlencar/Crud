@@ -8,7 +8,7 @@ const toastPersonalizado = (mensagem, tipo) => {
     let cor
     if(tipo == "sucesso") cor = "#00CC66"; //cor verde
     if(tipo == "erro")    cor = "#F44336"; //cor vermelha
-    if(tipo == "aviso")   cor = "#F0FF00"; //cor amarela
+    if(tipo == "aviso")   cor = "#E8DB0B"; //cor amarela
 
     Toastify({
         text: mensagem,
