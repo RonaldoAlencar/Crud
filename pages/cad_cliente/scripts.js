@@ -215,18 +215,10 @@ const buscarEndereco = (modo) => {
                 //foca no input numero
                 document.getElementById("numero").focus();
 
-                Toastify({
-                    text: "Campos atualizados com sucesso!",
-                    duration: 5000,
-                    newWindow: true,
-                    close: true,
-                    gravity: "top",
-                    position: "center",
-                    stopOnFocus: true
-                }).showToast();
+                toastPersonalizado("Dados do endereço preenchidos!", "sucesso");
             })
             .catch(function (error) {
-                console.log(error);
+                toastPersonalizado("Erro ao consultar CEP!", "erro");
             });
 
     } else {
@@ -245,19 +237,10 @@ const buscarEndereco = (modo) => {
                 //foca no input numero
                 document.getElementById("numero").focus();
 
-                Toastify({
-                    text: "Campos atualizados com sucesso!",
-                    duration: 5000,
-                    newWindow: true,
-                    close: true,
-                    gravity: "top", // `top` or `bottom`
-                    position: "center", // `left`, `center` or `right`
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    onClick: function () { } // Callback after click
-                }).showToast();
+                toastPersonalizado("Dados do endereço preenchidos!", "sucesso");
             })
             .catch(function (error) {
-                console.log(error);
+                toastPersonalizado("Erro ao consultar CEP!", "erro");
             });
     }
 
@@ -305,18 +288,7 @@ const removeEnderecoClienteArray = (elementoClicado) => {
 
     //valida se é o endereco principal
     if (enderecos[id].principal) {
-        Toastify({
-            text: "Não pode remover o endereco principal!",
-            duration: 5000,
-            newWindow: true,
-            close: true,
-            gravity: "top",
-            position: "center",
-            stopOnFocus: true,
-            style: {
-                background: "#F44336",
-            },
-        }).showToast();
+        toastPersonalizado("Não pode remover o endereço principal", "erro");
         return
     }
 
