@@ -11,7 +11,7 @@ $("#btn-send").on("click", (e) => {
     //valida campos preenchidos e valida se tem endereço preenchido
     if (validaCampos() && validaEnderecoPreenchido()) {
         $.ajax({
-            method: 'post',
+            method: "post",
             url: '../../api/cliente/index.php',
             data: {
                 funcao: 'cadastrarCliente',
@@ -78,7 +78,9 @@ $("#save-address-client").on("click", async (e) => {
     //adiciona no array para enviar osteriormente ao banco de dados
     enderecos.push({ id: auxiliar, logradouro, localidade, uf, bairro, numero, complemento, cep })
     //atualiza na tela com os dados
-    updateFrontEnd({ logradouro, localidade, uf, bairro, numero, complemento, cep })
+    atualizaDadosTela({ logradouro, localidade, uf, bairro, numero, complemento, cep })
+
+    return
 })
 
 $(document).ready(function () {
@@ -261,7 +263,7 @@ const buscarEndereco = (modo) => {
 
 }
 
-const updateFrontEnd = async (cliente) => {
+const atualizaDadosTela = async (cliente) => {
     //insere na tela endereço do cliente
     var tr_str = `
     <div id="address" name="address" class="p-2 mb-2" style="background-color: #fff" data-id=${auxiliar}>
