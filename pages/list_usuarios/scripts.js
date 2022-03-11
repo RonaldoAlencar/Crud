@@ -3,6 +3,9 @@ var idUsuario = 0;
 
 $(document).ready(async function () {
 
+  const parametrosURL = new URLSearchParams(window.location.search);
+  exibeToast(parametrosURL.get('sucesso'));
+
   //cria lista de usuarios na tela
   const response = await $.ajax({
     url: `../../api/cliente/index.php?funcao=listaUsuarios`,
@@ -70,8 +73,6 @@ $("#salvar-permissoes").on("click", async (e) => {
     }
   });
 
-  console.log(response)
-
   if (response.atualizado) {
     window.location = "?sucesso=true";
   } else {
@@ -88,4 +89,8 @@ const alimentaCampos = (dados) => {
   document.getElementById("modal-checkbox-adm").checked = dados.adm;
 
   $('#modalUsuario').modal('show');
+}
+
+const exibeToast = (exibe) => {
+  if (exibe) toastPersonalizado("Permissões atualizadas com sucesso!", "sucesso")
 }
