@@ -1,7 +1,7 @@
 var idEnderecoClicado;
 
 //no carregar da tela, alimenta os input com os dados do banco de dados
-$(document).ready(function () {
+$(document).ready(async function () {
 
     const urlParams = new URLSearchParams(window.location.search);
     idCliente = urlParams.get('id');
@@ -21,29 +21,24 @@ $(document).ready(function () {
         }
     });
 
-    $.ajax({
+    const response = await $.ajax({
         url: `../../api/cliente/index.php?funcao=clientePorId&id=${idCliente}`,
-        method: "get", //send it through get method,
-        dataType: 'JSON',
-        success: function (response) {
-            //alimenta campos do frontEnd
-            document.getElementById("nome").value = response[0]['nome'];
-            document.getElementById("cpf").value = response[0]['cpf'];
-            document.getElementById("rg").value = response[0]['rg'];
-            document.getElementById("email").value = response[0]['email'];
-            document.getElementById("telefone1").value = response[0]['telefone1'];
-            document.getElementById("telefone2").value = response[0]['telefone2'];
-            document.getElementById("cpf").value = response[0]['cpf'];
-            document.getElementById("data_nascimento").value = response[0]['data_nascimento'];
-
-            //alimenta endereços do cliente
-            updateFrontEndEndereco(response)
-        },
-        error: function (xhr) {
-            console.log("erro")
-            console.log(xhr)
-        }
+        method: "GET", //
+        dataType: "JSON"
     });
+
+    //alimenta campos do frontEnd
+    document.getElementById("nome").value = response[0]['nome'];
+    document.getElementById("cpf").value = response[0]['cpf'];
+    document.getElementById("rg").value = response[0]['rg'];
+    document.getElementById("email").value = response[0]['email'];
+    document.getElementById("telefone1").value = response[0]['telefone1'];
+    document.getElementById("telefone2").value = response[0]['telefone2'];
+    document.getElementById("cpf").value = response[0]['cpf'];
+    document.getElementById("data_nascimento").value = response[0]['data_nascimento'];
+
+    //alimenta endereços do cliente
+    updateFrontEndEndereco(response)
 });
 
 //atualiza ativo do endereço do cliente do banco de dados
@@ -123,7 +118,8 @@ $("#alter-address-client").on('click', (e) => {
             cidade: document.getElementById("cidade_alterar").value,
             uf: document.getElementById("uf_alterar").value,
             complemento: document.getElementById("complemento_alterar").value,
-            idEndereco: idEnderecoClicado
+            idEndereco: idEnderecoClicado,
+            principal: document.getElementById("checkbox-endereco-principal").checked ? 1 : 0
         },
         success: function (response) {
             //console.log(response)
@@ -150,14 +146,15 @@ const updateFrontEndEndereco = (enderecos) => {
         var cep = enderecos[1][i]['cep'];
         var complemento = enderecos[1][i]['complemento'];
         var id = enderecos[1][i]['id'];
+        var principal = enderecos[1][i]['principal'];
 
         //insere na tela endereço do cliente
         var tr_str = `
-        <div id="address" name="address" class="p-2" style="background-color: #fff" data-id=${id}>
+        <div id="address" name="address" class="p-2 mb-2" style="background-color: #fff" data-id=${id}>
             Rua: ${logradouro} N: ${numero}, Bairro: ${bairro}, Cidade: ${localidade} - ${uf}, CEP: ${cep}, Complemento: ${complemento}
-            <br /><strong>Principal</strong>
+            <br />${principal ? "<strong>Principal</strong>" : "Secundário"} 
             <div class="d-flex flex-row-reverse bd-highlight mt-0">
-                <a type='button' id='btn-delete' class='btn btn-danger btn-sm' onclick='removeEnderecoCliente(event.target)' data-bs-toggle='modal' data-bs-target='#modalRemoveEndereco'>
+                <a type='button' id='btn-delete' class='btn btn-danger btn-sm' onclick='removeEnderecoCliente(event.target, ${principal})'>
                     Remover
                 </a>
 
@@ -166,7 +163,6 @@ const updateFrontEndEndereco = (enderecos) => {
                 </a>
             </div>
         </div>
-        <hr />
         `;
 
         //adiciona no html
@@ -177,7 +173,24 @@ const updateFrontEndEndereco = (enderecos) => {
 }
 
 //seleciona o id do endereço do cliente a ser apagado apos confirmação
-const removeEnderecoCliente = async (elementoClicado) => {
+const removeEnderecoCliente = async (elementoClicado, principal) => {
+    if (principal) {
+        Toastify({
+            text: "Não pode remover o endereco principal!",
+            duration: 5000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+            style: {
+                background: "#F44336",
+            },
+        }).showToast();
+        return
+    }
+
+    $('#modalRemoveEndereco').modal('show');
 
     //seleciona o elemento vô para pegar o id a ser excluido
     var elementoPai = elementoClicado.parentNode;
@@ -185,15 +198,16 @@ const removeEnderecoCliente = async (elementoClicado) => {
 }
 
 //obtem obj retornado do click no editar endereço e alimenta campos para serem editados!
-const alteraEndCliente = (obj) => {
-    idEnderecoClicado = obj.id
-    document.getElementById("cep_alterar").value = obj.cep;
-    document.getElementById("logradouro_alterar").value = obj.logradouro;
-    document.getElementById("bairro_alterar").value = obj.bairro;
-    document.getElementById("numero_alterar").value = obj.numero;
-    document.getElementById("cidade_alterar").value = obj.localidade;
-    document.getElementById("uf_alterar").value = obj.uf;
-    document.getElementById("complemento_alterar").value = obj.complemento;
+const alteraEndCliente = (endereco) => {
+    idEnderecoClicado = endereco.id
+    document.getElementById("cep_alterar").value = endereco.cep;
+    document.getElementById("logradouro_alterar").value = endereco.logradouro;
+    document.getElementById("bairro_alterar").value = endereco.bairro;
+    document.getElementById("numero_alterar").value = endereco.numero;
+    document.getElementById("cidade_alterar").value = endereco.localidade;
+    document.getElementById("uf_alterar").value = endereco.uf;
+    document.getElementById("complemento_alterar").value = endereco.complemento;
+    document.getElementById("checkbox-endereco-principal").checked = endereco.principal;
 }
 
 const verificaPermissao = () => {

@@ -56,11 +56,11 @@ $("#btn-send").on("click", (e) => {
             }
         });
 
-        // //remove informação depois de 5 segundos
-        // setTimeout(() => {
-        //     $("div").remove("#info");
-        //     location.reload()
-        // }, 5000);
+        //remove informação depois de 5 segundos
+        setTimeout(() => {
+            $("div").remove("#info");
+            location.reload()
+        }, 5000);
     }
 })
 

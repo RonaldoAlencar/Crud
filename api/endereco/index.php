@@ -39,6 +39,22 @@ if ($method === 'PUT') {
         $uf = $sent_vars['uf'];
         $complemento = $sent_vars['complemento'];
         $idEndereco = $sent_vars['idEndereco'];
+        $principal = $sent_vars['principal'];
+
+        //rotina de atualização de endereço principal
+        if($principal){
+            //primeiro retira todos os endereços principais
+            $query = "UPDATE cliente_endereco SET principal = 0 WHERE idcliente=(SELECT idcliente FROM cliente_endereco WHERE id=? LIMIT 1)";
+            $statement = $conn->prepare($query);
+            $statement->bindParam(1, $idEndereco);
+            $statement->execute();
+
+            //logo após insere o endereço principal correto
+            $query = "UPDATE cliente_endereco SET principal = 1 WHERE id = ?";
+            $statement = $conn->prepare($query);
+            $statement->bindParam(1, $idEndereco);
+            $statement->execute();
+        }
 
         try {
             $query = "UPDATE cliente_endereco SET cep=?, logradouro=?, bairro=?, numero=?, localidade=?, uf=?, complemento=? WHERE id=?";
