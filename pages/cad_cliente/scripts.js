@@ -56,11 +56,11 @@ $("#btn-send").on("click", (e) => {
             }
         });
 
-        //remove informação depois de 5 segundos
-        setTimeout(() => {
-            $("div").remove("#info");
-            location.reload()
-        }, 5000);
+        // //remove informação depois de 5 segundos
+        // setTimeout(() => {
+        //     $("div").remove("#info");
+        //     location.reload()
+        // }, 5000);
     }
 })
 
@@ -76,9 +76,9 @@ $("#save-address-client").on("click", async (e) => {
     let cep = document.getElementById('cep').value;
 
     //adiciona no array para enviar osteriormente ao banco de dados
-    enderecos.push({ id: auxiliar, logradouro, localidade, uf, bairro, numero, complemento, cep })
+    enderecos.push({ id: auxiliar, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: auxiliar == 0 ? 1 : 0 })
     //atualiza na tela com os dados
-    atualizaDadosTela({ logradouro, localidade, uf, bairro, numero, complemento, cep })
+    atualizaDadosTela({ logradouro, localidade, uf, bairro, numero, complemento, cep, principal: auxiliar == 0 ? 1 : 0 })
 
     return
 })
@@ -263,12 +263,12 @@ const buscarEndereco = (modo) => {
 
 }
 
-const atualizaDadosTela = async (cliente) => {
-    //insere na tela endereço do cliente
+const atualizaDadosTela = async (endereco) => {
+    //insere na tela endereço do endereco
     var tr_str = `
     <div id="address" name="address" class="p-2 mb-2" style="background-color: #fff" data-id=${auxiliar}>
-        Rua: ${cliente.logradouro} N: ${cliente.numero}, Bairro: ${cliente.bairro}, Cidade: ${cliente.localidade} - ${cliente.uf}, CEP: ${cliente.cep}, Complemento: ${cliente.complemento}
-        <br /><strong>Principal</strong>
+        Rua: ${endereco.logradouro} N: ${endereco.numero}, Bairro: ${endereco.bairro}, Cidade: ${endereco.localidade} - ${endereco.uf}, CEP: ${endereco.cep}, Complemento: ${endereco.complemento}
+        <br />${endereco.principal ? "<strong>Principal</strong>" : "Secundário"} 
         <div class="d-flex flex-row-reverse bd-highlight mt-0">
             <a data-id=${auxiliar} type='button' class='btn btn-danger btn-sm' onclick="removeEnderecoClienteArray(event.target)" >
                 Remover
@@ -302,6 +302,23 @@ const validaEnderecoPreenchido = () => {
 
 const removeEnderecoClienteArray = (elementoClicado) => {
     let id = elementoClicado.getAttribute("data-id")
+
+    //valida se é o endereco principal
+    if (enderecos[id].principal) {
+        Toastify({
+            text: "Não pode remover o endereco principal!",
+            duration: 5000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+            style: {
+                background: "#F44336",
+            },
+        }).showToast();
+        return
+    }
 
     enderecos = enderecos.filter(function (item) {
         return item.id != id;

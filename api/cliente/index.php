@@ -33,8 +33,8 @@ if ($_POST['funcao'] == 'cadastrarCliente') {
 
         //INSERE ENDEREÇO
         for ($count = 0; $count <= (count($enderecos) - 1); $count++) {
-            $stmt = $conn->prepare("INSERT INTO cliente_endereco (idcliente,logradouro,localidade,uf,bairro,complemento,cep,numero) VALUES (?,?,?,?,?,?,?,?)");
-            $stmt->execute(array($lastInsertId, $enderecos[$count]['logradouro'], $enderecos[$count]['localidade'], $enderecos[$count]['uf'], $enderecos[$count]['bairro'], $enderecos[$count]['complemento'], $enderecos[$count]['cep'], $enderecos[$count]['numero']));
+            $stmt = $conn->prepare("INSERT INTO cliente_endereco (idcliente,logradouro,localidade,uf,bairro,complemento,cep,numero,principal) VALUES (?,?,?,?,?,?,?,?,?)");
+            $stmt->execute(array($lastInsertId, $enderecos[$count]['logradouro'], $enderecos[$count]['localidade'], $enderecos[$count]['uf'], $enderecos[$count]['bairro'], $enderecos[$count]['complemento'], $enderecos[$count]['cep'], $enderecos[$count]['numero'], $enderecos[$count]['principal'] ));
         }
         echo json_encode(['cadastrado' => true, 'mensagem' => 'Cadastro realizado com sucesso!', 'erro' => null, 'query' => $statement]);
     } catch (PDOException $e) {
