@@ -1,0 +1,43 @@
+{   ## logar ## método POST
+
+    {
+        email: string,
+        senha: string
+    }
+
+    return {
+        conectado: true || false,
+        mensagem: "Conectado com sucesso!" || "Erro ao realizar login"
+    }
+}
+
+{   ## cadastrarUsuario  ## método POST
+
+    {
+        email: string,
+        senha: string
+    }
+
+    return {
+        cadastrado: true || false
+        mensagem: Cadastro realizado com sucesso! || Erro ao realizar cadastro!
+        erro: null || PDOException error
+    }
+}
+
+{   ## atualizarPermissoes ## método PUT
+
+    {
+        excluir: 0 || 1,
+        editar: 0 || 1,
+        cadastrar: 0 || 1,
+        adm: 0 || 1,
+        idUsuario: int
+    }
+
+    return{
+        atualizado: true || false,
+        mensagem: Atualizado com sucesso! || Erro ao atualizar permissões
+        erro: null || PDOException error
+    }
+}

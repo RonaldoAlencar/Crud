@@ -1,0 +1,107 @@
+{   ## cadastrarCliente ## método POST
+
+    {
+        nome: string, 
+        cpf: string,  
+        rg: string, 
+        email: string, 
+        telefone1: string, 
+        telefone2: string, 
+        data_nasc: string, 
+        enderecos: Array,
+        emailUsuario: string
+    }
+
+    return {
+        cadastrado: true || false,
+        mensagem: Cadastro realizado com sucesso! || Erro ao realizar cadastro!,
+        erro: null || Object PDO Exception
+    }
+}
+
+{   ## CLIENTE POR ID ## método GET
+    
+    {
+        id: int
+    }
+
+    return {
+        cliente[0]: cliente,
+        cliente[1]: Array endereco
+    }
+}
+
+{   ## qtdEndAtivo ## método GET
+
+    {
+        id: int
+    }
+
+    return{
+        qtdEnd: int
+    }
+}
+
+{   ## listaClientes ## método GET
+
+    {
+        emailUsuario: string
+    }
+
+    return {
+        rows: array de clientes
+    }
+}
+
+{   ## verificaPermissao ## método GET 
+    
+    {
+        email: string
+    }
+
+    return {
+        permissao: json
+    }
+}
+
+{   ## listaUsuarios ## método GET
+    {
+        return {
+            usuario: array
+        }
+    }
+}
+
+{   ## atualizarAtivoCliente ## método PUT
+
+    {
+        idCliente: int
+    }
+
+    return{
+        atualizado: true || false,
+        mensagem: Atualizado com sucesso! || Erro ao atualizar!
+        erro: null || PDOException error
+    }
+}
+
+{   ## atualizaCliente  ## método PUT
+
+    {
+        nome: string
+        cpf: string
+        rg: string
+        email: string
+        telefone1: string
+        telefone2: string
+        data_nasc: string
+        enderecos: array
+        id: int
+    }
+
+    return{
+        atualizado: true || false,
+        mensagem: Atualizado com sucesso! || Erro ao atualizar!
+        erro: null || PDOException error
+    }
+}
