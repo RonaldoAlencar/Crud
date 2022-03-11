@@ -19,6 +19,13 @@ $(document).ready(async function () {
                 document.getElementById("new-address").style = "display: true";
                 document.getElementById("btn-update-client").style = "display: true";
             }
+            if (data.adm) {
+                $("#nav-tabs").append(`
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
+                </li>
+                `)
+            }
         },
         error: function (data) {
         }
