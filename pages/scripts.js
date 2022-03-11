@@ -23,3 +23,53 @@ const toastPersonalizado = (mensagem, tipo) => {
         },
     }).showToast();
 }
+
+const buscarEndereco = (modo) => {
+
+    //se modo alteração alimenta campos especificos, se não, alimenta outros campos
+    if (modo == 'alteracao') {
+        var cep = document.querySelector('#cep_alterar').value;
+
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then((resp) => resp.json())
+            .then(function (data) {
+
+                //preenchimento dos inputs com a resposta do fetch
+                document.querySelector("#logradouro_alterar").value = data.logradouro;
+                document.querySelector("#cidade_alterar").value = data.localidade;
+                document.querySelector("#uf_alterar").value = data.uf;
+                document.querySelector("#bairro_alterar").value = data.bairro;
+
+                //foca no input numero
+                document.getElementById("numero").focus();
+
+                toastPersonalizado("Dados do endereço preenchidos!", "sucesso");
+            })
+            .catch(function (error) {
+                toastPersonalizado("Erro ao consultar CEP!", "erro");
+            });
+
+    } else {
+        var cep = document.querySelector('#cep').value;
+
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then((resp) => resp.json())
+            .then(function (data) {
+
+                //preenchimento dos inputs com a resposta do fetch
+                document.querySelector("#logradouro").value = data.logradouro;
+                document.querySelector("#cidade").value = data.localidade;
+                document.querySelector("#uf").value = data.uf;
+                document.querySelector("#bairro").value = data.bairro;
+
+                //foca no input numero
+                document.getElementById("numero").focus();
+
+                toastPersonalizado("Dados do endereço preenchidos!", "sucesso");
+            })
+            .catch(function (error) {
+                toastPersonalizado("Erro ao consultar CEP!", "erro");
+            });
+    }
+
+}
