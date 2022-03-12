@@ -1,3 +1,9 @@
+const parametrosURL = new URLSearchParams(window.location.search);
+
+$(document).ready(async function () {
+    if (parametrosURL.get('desconectado')) toastPersonalizado("Desconectado com sucesso", "sucesso");
+});
+
 $("#valid-login").on('click', (e) => {
     e.preventDefault()
 

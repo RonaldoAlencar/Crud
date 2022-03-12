@@ -73,3 +73,7 @@ const buscarEndereco = (modo) => {
     }
 
 }
+const desconectar = () => {
+    localStorage.removeItem('usuario');
+    window.location.href = "../login/index.html";
+}
