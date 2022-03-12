@@ -95,7 +95,9 @@ if ($_GET['funcao'] === 'listaClientes') {
             c.ativo='1' 
             AND 
 	        if((SELECT adm FROM usuario WHERE email = '$emailUsuario') > 0, 1, 
-            c.idvendedor IN (SELECT id FROM usuario WHERE email = '$emailUsuario'))";
+            c.idvendedor IN (SELECT id FROM usuario WHERE email = '$emailUsuario'))
+            ORDER BY c.id DESC    
+        ";
 
     $dados = $conn->query($sql);
     $rows = $dados->fetchAll();
