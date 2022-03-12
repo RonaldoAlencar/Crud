@@ -43,6 +43,7 @@ $(document).ready(function () {
         var cpf = response[i].cpf;
         var rg = response[i].rg;
         var qtd_endereco = response[i].qtd_endereco;
+        var vendedor = response[i].vendedor;
 
         var tr_str = `<tr>
         <th scope='row' id="id">${id}</th>
@@ -51,6 +52,7 @@ $(document).ready(function () {
           <td>${cpf}</td>
           <td>${rg}</td>
           <td>${qtd_endereco}</td>
+          <td>${vendedor}</td>
           <td>
             <a href='../cad_edit_cliente/index.html?id=${id}' class='btn btn-success'>Visualizar</a>
             <a type='button' class='btn btn-danger' id="btn-desativar" ${permissoes.excluir ? 'style="display: true"' : 'style="display: none"'} onclick="selecionaIdCliente(event.target)" data-bs-toggle='modal' data-bs-target='#exampleModal'>

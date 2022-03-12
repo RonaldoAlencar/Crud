@@ -86,7 +86,8 @@ if ($_GET['funcao'] === 'listaClientes') {
     //query para cada usuario ver seus clientes e adm ver todos
     $sql = "SELECT 
 	    c.*, 
-        (select count(id) FROM cliente_endereco ce WHERE ce.ativo=1 AND ce.idcliente=c.id) AS qtd_endereco
+        (select count(id) FROM cliente_endereco ce WHERE ce.ativo=1 AND ce.idcliente=c.id) AS qtd_endereco,
+        (SELECT nome FROM usuario u WHERE u.id = c.idvendedor) as vendedor
     
         FROM clientes c 
 
