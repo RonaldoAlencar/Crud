@@ -10,27 +10,6 @@ $(document).ready(async function () {
     if (parametrosURL.get('sucessoAtualizaEndereco')) toastPersonalizado("Endereço atualizado com sucesso", "sucesso");
     if (parametrosURL.get('sucessoRemoveEndereco')) toastPersonalizado("Endereço removido com sucesso", "sucesso");
 
-    $.ajax({
-        url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
-        method: "get",
-        dataType: 'JSON',
-        success: function (data) {
-            if (data.editar) {
-                document.getElementById("new-address").style = "display: true";
-                document.getElementById("btn-update-client").style = "display: true";
-            }
-            if (data.adm) {
-                $("#nav-tabs").append(`
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
-                </li>
-                `)
-            }
-        },
-        error: function (data) {
-        }
-    });
-
     const response = await $.ajax({
         url: `../../api/cliente/index.php?funcao=clientePorId&id=${idCliente}`,
         method: "GET", //
@@ -196,20 +175,27 @@ const alteraEndCliente = (endereco) => {
 
 const verificaPermissao = async () => {
     let email = localStorage.getItem('usuario')
-    const response = await $.ajax({
+    const { permissao } = await $.ajax({
         url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
         method: "GET",
         dataType: "JSON"
     });
 
     //verifica permissão de editar, se não esconde botões
-    if (!response.editar) {
+    if (!permissao.editar) {
         document.getElementById("btn-edit").setAttribute("hidden", "")
         document.getElementById("btn-update-client").setAttribute("hidden", "")
         document.getElementById("new-address").setAttribute("hidden", "")
     }
-    if (!response.excluir) {
+    if (!permissao.excluir) {
         document.getElementById("btn-delete").setAttribute("hidden", "")
+    }
+    if (permissao.adm) {
+        $("#nav-tabs").append(`
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
+        </li>
+        `)
     }
 
 }

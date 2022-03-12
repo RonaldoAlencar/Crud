@@ -83,33 +83,27 @@ $("#save-address-client").on("click", async (e) => {
     return
 })
 
-$(document).ready(function () {
+$(document).ready(async function () {
     let email = localStorage.getItem("usuario");
 
-    $.ajax({
+    const { permissao } = await $.ajax({
         url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
         method: "get",
-        dataType: "JSON",
-        success: function (data) {
-            console.log(data);
-            if (data.cadastrar) {
-                document.getElementById("btn-send").style = "display: true";
-                document.getElementById("novo-endereco").style = "display: true";
-            }
-            //libera acessos a usuarios se usuario conectado for adm
-            if (data.adm) {
-                $("#nav-tabs").append(`
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
-                </li>
-                `);
-            }
-        },
-        error: function (data) {
-            console.log("erro");
-            console.log(data);
-        }
+        dataType: "JSON"
     });
+
+    if (permissao.cadastrar) {
+        document.getElementById("btn-send").style = "display: true";
+        document.getElementById("novo-endereco").style = "display: true";
+    }
+    //libera acessos a usuarios se usuario conectado for adm
+    if (permissao.adm) {
+        $("#nav-tabs").append(`
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
+        </li>
+        `);
+    }
     return
 });
 
