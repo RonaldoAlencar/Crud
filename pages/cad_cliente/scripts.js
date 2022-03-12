@@ -1,15 +1,105 @@
-//array de endereços do cliente
 var enderecos = []
 var posicaoArray = 0;
 
 //################################## funções ajax#################################
-//cadastra novo cliente
-$("#btn-send").on("click", (e) => {
-    e.preventDefault();
+$(document).ready(async function () {
+    let email = localStorage.getItem("usuario");
 
-    //valida campos preenchidos e valida se tem endereço preenchido
-    if (validaCampos() && validaEnderecoPreenchido()) {
-        $.ajax({
+    const { permissao } = await $.ajax({
+        url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
+        method: "get",
+        dataType: "JSON"
+    });
+
+    if (permissao.cadastrar) {
+        document.getElementById("cadastrar").style = "display: true";
+        document.getElementById("novo-endereco").style = "display: true";
+    }
+
+    //libera acessos a usuarios se usuario conectado for adm
+    if (permissao.adm) {
+        $("#nav-tabs").append(`
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
+        </li>
+        `);
+    }
+    return
+});
+
+//validação dos dados preenchidos no form de cadastro de clientes
+$('#form-cadastro-cliente').bootstrapValidator({
+    fields: {
+        nome: {
+            validators: {
+                notEmpty: {
+                    message: '<small style="color: red;">O nome é obrigatório!</small>'
+                },
+                stringLength: {
+                    min: 3,
+                    message: '<small style="color: red;">A quantidade mínima de caracteres é 3!</small>'
+                }
+            },
+        },
+        cpf: {
+            validators: {
+                stringLength: {
+                    min: 14,
+                    message: '<small style="color: red;">CPF inválido!</small>'
+                },
+                notEmpty: {
+                    message: '<small style="color: red;">O CPF é obrigatório!</small>'
+                },
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                    message: '<small style="color: red;">O email é obrigatório!</small>'
+                },
+                emailAddress: {
+                    message: '<small style="color: red;">O email inserido não é válido</small>'
+                }
+            }
+        },
+        rg: {
+            validators: {
+                stringLength: {
+                    min: 11,
+                    message: '<small style="color: red;">RG inválido!</small>'
+                },
+                notEmpty: {
+                    message: '<small style="color: red;">O RG é obrigatório!</small>'
+                },
+            }
+        },
+        telefone1: {
+            validators: {
+                stringLength: {
+                    min: 14,
+                    message: '<small style="color: red;">Telefone inválido!</small>'
+                },
+                notEmpty: {
+                    message: '<small style="color: red;">O telefone1 é obrigatório!</small>'
+                }
+            }
+        },
+        'data-nasc': {
+            validators: {
+                stringLength: {
+                    min: 10,
+                    message: '<small style="color: red;">Data de nascimento inválida</small>'
+                },
+                notEmpty: {
+                    message: '<small style="color: red;">A data de nascimento é obrigatória!</small>'
+                },
+            }
+        },
+    }
+}).on('success.form.bv', async function (e) {
+    //caso form esteja valido, valida prenchimento de endereço
+    if (validaEnderecoPreenchido()) {
+        const response = await $.ajax({
             method: "POST",
             url: '../../api/cliente/index.php',
             data: {
@@ -23,37 +113,28 @@ $("#btn-send").on("click", (e) => {
                 data_nascimento: document.getElementById('data_nascimento').value,
                 enderecos: enderecos,
                 emailUsuario: localStorage.getItem('usuario')
-            },
-            success: (data) => {
-                console.log(data)
-                if (data.cadastrado) {
-                    $('#return-params').append(`
-                            <div class="alert alert-success" id="info" role="alert">
-                                Cadastrado com sucesso!
-                            </div>  
-                            `);
-                    //limpa campos do formulário
-                    document.getElementById("form-cadastro-cliente").reset();
-                    //Removendo a div de endereços
-                    var node = document.getElementById("address-client");
-                    if (node.parentNode) {
-                        node.parentNode.removeChild(node);
-                    }
-                }
-
-                if (!data.cadastrado) {
-                    $('#return-params').append(`
-                            <div class="alert alert-danger" id="info" role="alert">
-                                Erro ao realizar cadastro!
-                            </div>  
-                            `);
-                }
-
-            },
-            error: (data) => {
-                console.log(data)
             }
         });
+        //se cadastrado insere informação na tela
+        if (response.cadastrado) {
+            $('#mensagem-retorno').append(`
+                <div class="alert alert-success" id="info" role="alert">
+                    Cadastrado com sucesso!
+                </div>  
+            `);
+            //Removendo a div de endereços
+            var node = document.getElementById("endereco-cliente");
+            if (node.parentNode) node.parentNode.removeChild(node);
+
+            //limpa campos do formulário
+            document.getElementById("form-cadastro-cliente").reset();
+        } else {
+            $('#mensagem-retorno').append(`
+                <div class="alert alert-danger" id="info" role="alert">
+                    Erro ao realizar cadastro!
+                </div>  
+            `);
+        }
 
         //remove informação depois de 5 segundos
         setTimeout(() => {
@@ -63,8 +144,8 @@ $("#btn-send").on("click", (e) => {
     }
 })
 
-//salva informações em array de endereços
-$("#save-address-client").on("click", async (e) => {
+//salva endereço em array
+$("#cadastrar-endereco-cliente").on("click", async (e) => {
 
     let logradouro = document.getElementById('logradouro').value;
     let localidade = document.getElementById('cidade').value;
@@ -77,135 +158,18 @@ $("#save-address-client").on("click", async (e) => {
     //adiciona no array para enviar osteriormente ao banco de dados
     enderecos.push({ id: posicaoArray, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: posicaoArray == 0 ? 1 : 0 })
     //atualiza na tela com os dados
-    atualizaDadosTela({ id: posicaoArray, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: posicaoArray == 0 ? 1 : 0 })
+    atualizaEnderecoClienteTela({ id: posicaoArray, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: posicaoArray == 0 ? 1 : 0 })
     posicaoArray++;
     return
 })
 
-$(document).ready(async function () {
-    let email = localStorage.getItem("usuario");
-
-    const { permissao } = await $.ajax({
-        url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
-        method: "get",
-        dataType: "JSON"
-    });
-
-    if (permissao.cadastrar) {
-        document.getElementById("btn-send").style = "display: true";
-        document.getElementById("novo-endereco").style = "display: true";
-    }
-    //libera acessos a usuarios se usuario conectado for adm
-    if (permissao.adm) {
-        $("#nav-tabs").append(`
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
-        </li>
-        `);
-    }
-    return
-});
-
 //################################## funções js #################################
-//masks
-//phone 
-
-var tel1 = new Cleave('#telefone1', {
-    delimiters: ['(', ')', '-'],
-    blocks: [0, 2, 4, 4]
-});
-
-//cpf
-var cpf = new Cleave('#cpf', {
-    delimiters: ['.', '.', '-'],
-    blocks: [3, 3, 3, 2]
-});
-
-//RG
-var rg = new Cleave('#rg', {
-    delimiters: ['.', '.', '-'],
-    blocks: [2, 3, 3, 1]
-});
-
-const validaCampos = () => {
-    var flag = 0;
-
-    if ($("#nome").val() == '') {
-        $("#nome").css({ borderColor: "red" })
-        flag = 1;
-    } else {
-        $("#nome").css({ borderColor: "#ccd4da" })
-    }
-
-
-    if ($("#cpf").val() == '') {
-        $("#cpf").css({ borderColor: "red" })
-        flag = 1;
-    } else {
-        $("#cpf").css({ borderColor: "#ccd4da" })
-    }
-
-
-    if ($("#rg").val() == '') {
-        $("#rg").css({ borderColor: "red" })
-        flag = 1;
-    } else {
-        $("#rg").css({ borderColor: "#ccd4da" })
-    }
-
-
-    if ($("#email").val() == '') {
-        $("#email").css({ borderColor: "red" })
-        flag = 1;
-    } else {
-        $("#email").css({ borderColor: "#ccd4da" })
-    }
-
-
-    if ($("#telefone1").val() == '') {
-        $("#telefone1").css({ borderColor: "red" })
-        flag = 1;
-    } else {
-        $("#telefone1").css({ borderColor: "#ccd4da" })
-    }
-
-
-    if ($("#telefone2").val() == '') {
-        $("#telefone2").css({ borderColor: "red" })
-        flag = 1;
-    } else {
-        $("#telefone2").css({ borderColor: "#ccd4da" })
-    }
-
-
-    if ($("#data_nascimento").val() == '') {
-        $("#data_nascimento").css({ borderColor: "red" })
-        flag = 1;
-    } else {
-        $("#data_nascimento").css({ borderColor: "#ccd4da" })
-    }
-
-    if (flag == 0) return true
-    else return false
-}
-
 const validaEnderecoPreenchido = () => {
     if (enderecos.length <= 0) {
-        Toastify({
-            text: "É obrigatório o prenchimento do endereço!",
-            duration: 5000,
-            newWindow: true,
-            close: true,
-            gravity: "top", // `top` or `bottom`
-            position: "center", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            onClick: function () { } // Callback after click
-        }).showToast();
+        toastPersonalizado("É obrigatório o preenchimento do endereço!", "erro")
         return false
-    } else {
-        //endereço preenchido retorna true
-        return true
     }
+    return true
 }
 
 const removeEnderecoClienteArray = (elementoClicado) => {
@@ -224,8 +188,7 @@ const removeEnderecoClienteArray = (elementoClicado) => {
     }
 }
 
-const atualizaDadosTela = async (endereco) => {
-    console.log(endereco)
+const atualizaEnderecoClienteTela = async (endereco) => {
     //insere na tela endereço do endereco
     var tr_str = `
     <div id="address" name="address" class="p-2 mb-2" style="background-color: #fff" data-id=${endereco.id}>
@@ -239,5 +202,5 @@ const atualizaDadosTela = async (endereco) => {
     </div>
     `;
 
-    $("#address-client").append(tr_str);
+    $("#endereco-cliente").append(tr_str);
 }

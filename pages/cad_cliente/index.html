@@ -2,16 +2,12 @@
 <html lang="pt-br">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"
-        integrity="sha512-KaIyHb30iXTXfGyI9cyKFUIRSSuekJt6/vqXtyQKhQP6ozZEGY8nOtRS6fExqE4+RbYHus2yGyYg1BrqxzV6YA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="../styles.css">
+    
     <title>Cadastro cliente</title>
 </head>
 
@@ -19,98 +15,96 @@
 
     <ul id="nav-tabs" class="nav nav-tabs" style="background-color: #e4e4e4;">
         <li class="nav-item">
-            <a class="nav-link active text-dark" href="#">Cadastro de clientes</a>
+            <a class="nav-link active text-dark">Cadastro de clientes</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" href="../list_clientes/index.html">Listagem de clientes</a>
         </li>
         <button class="btn btn-danger" onclick="desconectar()"
-            style="position: absolute; z-index: 99; right: 10px; margin-top: 1.5px;" href="#">Desconectar</button>
+            style="position: absolute; z-index: 99; right: 10px; margin-top: 1.5px;">Desconectar</button>
     </ul>
 
     <div class="container align-self-stretch">
         <form id="form-cadastro-cliente" class="card p-4"
             style="width: 100%; margin-top: 10px; background-color: #F3F6F4;">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Cadastro de novo cliente</h1>
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="cpf-input">CPF</label>
-                            <input required type="text" class="form-control" id="cpf" name="cpf">
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="rg-input">RG</label>
-                            <input required type="text" class="form-control" id="rg" name="rg">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="rg-input">E-mail</label>
-                        <input required type="email" class="form-control" id="email" name="email">
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-4">
-                            <label for="rg-input">Telefone 1</label>
-                            <input required type="Telefone1" class="form-control" id="telefone1" name="telefone1">
-                        </div>
-
-                        <div class="form-group col-md-4">
-                            <label for="rg-input">Telefone 2</label>
-                            <input type="phone" class="form-control" id="telefone2" name="telefone2">
-                        </div>
-
-                        <div class="form-group col-md-4">
-                            <label for="rg-input">Data nascimento</label>
-                            <input required type="date" class="form-control" id="data_nascimento" name="data-nasc">
-                        </div>
-                    </div>
-
-                    <button type="button" style="display: none;" id="novo-endereco" class="btn btn-secondary mt-2"
-                        data-bs-toggle="modal" data-bs-target="#exampleModal">Novo endereço</button>
-                    <div class="d-flex justify-content-center col-md-12">
-                        <button id="btn-send" style="display: none;"
-                            class="btn btn-primary mt-3 col-md-4">Cadastrar</button>
-                    </div>
-
-                    <!-- Exibe ao usuario mensagem de sucesso ou erro -->
-                    <div id="return-params" class="mt-3"></div>
+            <div class="col-md-12">
+                <h1>Cadastro de novo cliente</h1>
+                <div class="form-group pb-3">
+                    <label>Nome</label>
+                    <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="nome" name="nome" required>
                 </div>
+
+                <div class="row pb-3">
+                    <div class="form-group col-md-6">
+                        <label for="cpf">CPF</label>
+                        <input required type="text" class="form-control" id="cpf" name="cpf">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="rg">RG</label>
+                        <input required type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="rg" name="rg">
+                    </div>
+                </div>
+
+                <div class="form-group pb-3">
+                    <label for="email">E-mail</label>
+                    <input required type="email" oninput="this.value = this.value.toUpperCase()" class="form-control" id="email" name="email">
+                </div>
+
+                <div class="row pb-3">
+                    <div class="form-group col-md-4">
+                        <label for="telefone1">Telefone 1</label>
+                        <input required type="text" class="form-control" id="telefone1" name="telefone1">
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="telefone2">Telefone 2</label>
+                        <input type="text" class="form-control" id="telefone2" name="telefone2">
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="data_nascimento">Data nascimento</label>
+                        <input required type="date" class="form-control" id="data_nascimento" name="data-nasc">
+                    </div>
+                </div>
+
+                <button type="button" style="display: none;" id="novo-endereco" class="btn btn-secondary mt-2"
+                    data-bs-toggle="modal" data-bs-target="#modalEndereco">Novo endereço</button>
+
+                <div class="d-flex justify-content-center col-md-12">
+                    <button id="cadastrar" style="display: none;"
+                        class="btn btn-primary mt-3 col-md-4">Cadastrar</button>
+                </div>
+
+                <!-- Exibe ao usuario mensagem de sucesso ou erro -->
+                <div id="mensagem-retorno" class="mt-3"></div>
             </div>
 
             <!-- Exibe endereços do cliente -->
             <div class="col-md-12 container d-flex justify-content-center mt-0">
                 <div class="col" id="address">
                     <h3>Endereços</h3>
-                    <div id="address-client">
-
-                    </div>
+                    <div id="endereco-cliente"></div>
                 </div>
             </div>
+
         </form>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalEndereco" tabindex="-1" aria-labelledby="modalEndereco" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cadastro de novo endereço</h5>
+                    <h5 class="modal-title" id="modalEndereco">Cadastro de novo endereço</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="col-form-label">CEP</label>
+                                <label for="cep" class="col-form-label">CEP</label>
                                 <input type="text" class="form-control" id="cep">
                             </div>
 
@@ -121,47 +115,46 @@
                         </div>
 
                         <div class="col-md-12">
-                            <label class="col-form-label">Logradouro</label>
+                            <label for="logradouro" class="col-form-label">Logradouro</label>
                             <input class="form-control" id="logradouro"></input>
                         </div>
 
                         <div class="row">
 
                             <div class="col-md-10">
-                                <label class="col-form-label">Bairro</label>
+                                <label for="bairro" class="col-form-label">Bairro</label>
                                 <input class="form-control" id="bairro"></input>
                             </div>
 
                             <div class="col-md-2">
-                                <label class="col-form-label">N</label>
+                                <label for="numero" class="col-form-label">N</label>
                                 <input class="form-control" id="numero"></input>
                             </div>
                         </div>
 
-
                         <div class="row">
 
                             <div class="col-md-10">
-                                <label class="col-form-label">Cidade</label>
+                                <label for="cidade" class="col-form-label">Cidade</label>
                                 <input class="form-control" id="cidade"></input>
                             </div>
 
                             <div class="col-md-2">
-                                <label class="col-form-label">UF</label>
+                                <label for="uf" class="col-form-label">UF</label>
                                 <input class="form-control" id="uf"></input>
                             </div>
 
                         </div>
 
                         <div class="col-md-12">
-                            <label class="col-form-label">complemento</label>
-                            <textarea class="form-control" id="uf"></textarea>
+                            <label for="complemento" class="col-form-label">complemento</label>
+                            <textarea class="form-control" id="complemento"></textarea>
                         </div>
                     </form>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" id="save-address-client" class="btn btn-primary"
+                    <button type="button" id="cadastrar-endereco-cliente" class="btn btn-primary"
                         data-bs-dismiss="modal">Gravar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
@@ -169,24 +162,15 @@
         </div>
     </div>
 
-    <footer style="position: absolute; bottom: 0;">
-        <a href="https://github.com/RonaldoAlencar">
-            <img src="https://www.pngplay.com/wp-content/uploads/12/GitHub-PNG-HD-Photos.png" height="40px" width="100px" alt="Meu GitHub" srcset="">
-        </a>
-    </footer>
-
-
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js" integrity="sha512-Vp2UimVVK8kNOjXqqj/B0Fyo96SDPj9OCSm1vmYSrLYF3mwIOBXh/yRZDVKo8NemQn1GUjjK0vFJuCSCkYai/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="./scripts.js"></script>
     <script src="../scripts.js"></script>
+
 </body>
 
 </html>

@@ -77,3 +77,10 @@ const desconectar = () => {
     localStorage.removeItem('usuario');
     window.location.href = "../login/index.html";
 }
+
+$("#cpf").mask("000.000.000-00")
+$("#rg").mask("00.000.000-A")
+$("#telefone1").mask("(00) 0000-0000")
+$("#telefone2").mask("(00) 00000-0000")
+$("#cep").mask("00000-000")
+$("#email").mask("A", { translation: { "A": { pattern: /[\w@\-.+]/, recursive: true } } })
