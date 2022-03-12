@@ -1,7 +1,6 @@
 //array de endereços do cliente
 var enderecos = []
-var posicaoArrayInicial = 0;
-var auxiliar = posicaoArrayInicial;
+var posicaoArray = 0;
 
 //################################## funções ajax#################################
 //cadastra novo cliente
@@ -11,7 +10,7 @@ $("#btn-send").on("click", (e) => {
     //valida campos preenchidos e valida se tem endereço preenchido
     if (validaCampos() && validaEnderecoPreenchido()) {
         $.ajax({
-            method: "post",
+            method: "POST",
             url: '../../api/cliente/index.php',
             data: {
                 funcao: 'cadastrarCliente',
@@ -76,10 +75,10 @@ $("#save-address-client").on("click", async (e) => {
     let cep = document.getElementById('cep').value;
 
     //adiciona no array para enviar osteriormente ao banco de dados
-    enderecos.push({ id: auxiliar, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: auxiliar == 0 ? 1 : 0 })
+    enderecos.push({ id: posicaoArray, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: posicaoArray == 0 ? 1 : 0 })
     //atualiza na tela com os dados
-    atualizaDadosTela({ logradouro, localidade, uf, bairro, numero, complemento, cep, principal: auxiliar == 0 ? 1 : 0 })
-
+    atualizaDadosTela({ id: posicaoArray, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: posicaoArray == 0 ? 1 : 0 })
+    posicaoArray++;
     return
 })
 
@@ -190,24 +189,6 @@ const validaCampos = () => {
     else return false
 }
 
-const atualizaDadosTela = async (endereco) => {
-    //insere na tela endereço do endereco
-    var tr_str = `
-    <div id="address" name="address" class="p-2 mb-2" style="background-color: #fff" data-id=${auxiliar}>
-        Rua: ${endereco.logradouro} N: ${endereco.numero}, Bairro: ${endereco.bairro}, Cidade: ${endereco.localidade} - ${endereco.uf}, CEP: ${endereco.cep}, Complemento: ${endereco.complemento}
-        <br />${endereco.principal ? "<strong>Principal</strong>" : "Secundário"} 
-        <div class="d-flex flex-row-reverse bd-highlight mt-0">
-            <a data-id=${auxiliar} type='button' class='btn btn-danger btn-sm' onclick="removeEnderecoClienteArray(event.target)" >
-                Remover
-            </a>
-        </div>
-    </div>
-    `;
-
-    $("#address-client").append(tr_str);
-    auxiliar++;
-}
-
 const validaEnderecoPreenchido = () => {
     if (enderecos.length <= 0) {
         Toastify({
@@ -231,15 +212,32 @@ const removeEnderecoClienteArray = (elementoClicado) => {
     let id = elementoClicado.getAttribute("data-id")
 
     //valida se é o endereco principal
-    if (enderecos[id].principal) {
+    if (enderecos[id]?.principal) {
         toastPersonalizado("Não pode remover o endereço principal", "erro");
-        return
+    } else {
+        enderecos = enderecos.filter(function (item) {
+            return item.id != id;
+        });
+
+        elementos = document.querySelectorAll(`[data-id='${id}']`)
+        elementos[0].parentNode.removeChild(elementos[0]);
     }
+}
 
-    enderecos = enderecos.filter(function (item) {
-        return item.id != id;
-    });
+const atualizaDadosTela = async (endereco) => {
+    console.log(endereco)
+    //insere na tela endereço do endereco
+    var tr_str = `
+    <div id="address" name="address" class="p-2 mb-2" style="background-color: #fff" data-id=${endereco.id}>
+        Rua: ${endereco.logradouro} N: ${endereco.numero}, Bairro: ${endereco.bairro}, Cidade: ${endereco.localidade} - ${endereco.uf}, CEP: ${endereco.cep}, Complemento: ${endereco.complemento}
+        <br />${endereco.principal ? "<strong>Principal</strong>" : "Secundário"} 
+        <div class="d-flex flex-row-reverse bd-highlight mt-0">
+            <a data-id=${endereco.id} type='button' class='btn btn-danger btn-sm' onclick="removeEnderecoClienteArray(event.target)" >
+                Remover
+            </a>
+        </div>
+    </div>
+    `;
 
-    elementos = document.querySelectorAll(`[data-id='${id}']`)
-    elementos[0].parentNode.removeChild(elementos[0]);
+    $("#address-client").append(tr_str);
 }

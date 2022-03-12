@@ -4,6 +4,40 @@ include "../conection/index.php";
 header("Content-Type: application/json");
 $method = $_SERVER["REQUEST_METHOD"];
 
+####################################### POST ####################################### 
+if ($_POST['funcao'] == "cadastrarNovoEndereco") {
+
+    try {
+        $logradouro = $_POST['logradouro'];
+        $localidade = $_POST['localidade'];
+        $uf = $_POST['uf'];
+        $bairro = $_POST['bairro'];
+        $numero = $_POST['numero'];
+        $complemento = $_POST['complemento'];
+        $cep = $_POST['cep'];
+        $idCliente = $_POST['idCliente'];
+        $principal = $_POST['principal'];
+
+        $query = "INSERT INTO cliente_endereco (idcliente,logradouro,localidade,uf,bairro,complemento,cep,numero) VALUES (?,?,?,?,?,?,?,?)";
+        //INSERE ENDEREÇO
+        $statement = $conn->prepare($query);
+        $statement->bindParam(1, $idCliente);
+        $statement->bindParam(2, $logradouro);
+        $statement->bindParam(3, $localidade);
+        $statement->bindParam(4, $uf);
+        $statement->bindParam(5, $bairro);
+        $statement->bindParam(6, $complemento);
+        $statement->bindParam(7, $cep);
+        $statement->bindParam(8, $numero);
+        $statement->execute();
+
+        echo json_encode(['cadastrado' => true, 'mensagem' => 'Cadastro realizado com sucesso!', 'erro' => null]);
+    } catch (PDOException $e) {
+        $e->getMessage();
+        echo json_encode(['cadastrado' => false, 'mensagem' => 'Erro ao realizar cadastro!', 'erro' => $e]);
+    }
+}
+
 ####################################### PUT ####################################### 
 
 //obtem os dados recebidos pelo metodo
@@ -42,7 +76,7 @@ if ($method === 'PUT') {
         $principal = $sent_vars['principal'];
 
         //rotina de atualização de endereço principal
-        if($principal){
+        if ($principal) {
             //primeiro retira todos os endereços principais
             $query = "UPDATE cliente_endereco SET principal = 0 WHERE idcliente=(SELECT idcliente FROM cliente_endereco WHERE id=? LIMIT 1)";
             $statement = $conn->prepare($query);

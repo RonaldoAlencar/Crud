@@ -106,6 +106,40 @@ $("#alter-address-client").on('click', async (e) => {
     }
 })
 
+$("#save-address-client").on("click", async (e) =>{
+    let logradouro = document.getElementById('logradouro').value;
+    let localidade = document.getElementById('cidade').value;
+    let uf = document.getElementById('uf').value;
+    let bairro = document.getElementById('bairro').value;
+    let numero = document.getElementById('numero').value;
+    let complemento = document.getElementById('complemento')?.value;
+    let cep = document.getElementById('cep').value;
+
+    const response = await $.ajax({
+        method: "POST",
+        url: '../../api/endereco/index.php',
+        data: {
+            funcao: 'cadastrarNovoEndereco',
+            logradouro,
+            localidade,
+            uf,
+            bairro,
+            numero,
+            complemento,
+            cep,
+            idCliente,
+            principal: 0
+        }
+    })
+
+    if (response.cadastrado) {
+        window.location = `?sucesso=true&id=${idCliente}`;
+    } else {
+        window.location = `?sucesso=false&id=${idCliente}`;
+    }
+
+})
+
 //insere endereços na tela
 const updateFrontEndEndereco = (enderecos) => {
 
