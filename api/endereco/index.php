@@ -1,22 +1,21 @@
 <?php
 include "../conection/index.php";
-
 header("Content-Type: application/json");
 $method = $_SERVER["REQUEST_METHOD"];
 
 ####################################### POST ####################################### 
-if ($_POST['funcao'] == "cadastrarNovoEndereco") {
+if ($_POST["funcao"] == "cadastrarNovoEndereco") {
 
     try {
-        $logradouro = $_POST['logradouro'];
-        $localidade = $_POST['localidade'];
-        $uf = $_POST['uf'];
-        $bairro = $_POST['bairro'];
-        $numero = $_POST['numero'];
-        $complemento = $_POST['complemento'];
-        $cep = $_POST['cep'];
-        $idCliente = $_POST['idCliente'];
-        $principal = $_POST['principal'];
+        $logradouro = $_POST["logradouro"];
+        $localidade = $_POST["localidade"];
+        $uf = $_POST["uf"];
+        $bairro = $_POST["bairro"];
+        $numero = $_POST["numero"];
+        $complemento = $_POST["complemento"];
+        $cep = $_POST["cep"];
+        $idCliente = $_POST["idCliente"];
+        $principal = $_POST["principal"];
 
         $query = "INSERT INTO cliente_endereco (idcliente,logradouro,localidade,uf,bairro,complemento,cep,numero) VALUES (?,?,?,?,?,?,?,?)";
         //INSERE ENDEREÇO
@@ -31,23 +30,23 @@ if ($_POST['funcao'] == "cadastrarNovoEndereco") {
         $statement->bindParam(8, $numero);
         $statement->execute();
 
-        echo json_encode(['cadastrado' => true, 'mensagem' => 'Cadastro realizado com sucesso!', 'erro' => null]);
+        echo json_encode(["cadastrado" => true, "mensagem" => "Cadastro realizado com sucesso!", "erro" => null]);
     } catch (PDOException $e) {
         $e->getMessage();
-        echo json_encode(['cadastrado' => false, 'mensagem' => 'Erro ao realizar cadastro!', 'erro' => $e]);
+        echo json_encode(["cadastrado" => false, "mensagem" => "Erro ao realizar cadastro!", "erro" => $e]);
     }
 }
 
 ####################################### PUT ####################################### 
+if ($method === "PUT") {
 
-//obtem os dados recebidos pelo metodo
-parse_str(file_get_contents("php://input"), $sent_vars);
+    //obtem os dados recebidos pelo metodo
+    parse_str(file_get_contents("php://input"), $sent_vars);
 
-if ($method === 'PUT') {
     //atualiza endereço para inativo/excluido///
-    if ($sent_vars['funcao'] == 'atualizarAtivoEnderecoCliente') {
+    if ($sent_vars["funcao"] == "atualizarAtivoEnderecoCliente") {
 
-        $idEnderecoClicado = $sent_vars['idEndCli'];
+        $idEnderecoClicado = $sent_vars["idEndCli"];
 
         try {
             $query = "UPDATE cliente_endereco SET ativo=0 WHERE id=?";
@@ -56,24 +55,24 @@ if ($method === 'PUT') {
             $statement->bindParam(1, $idEnderecoClicado);
             $statement->execute();
 
-            echo json_encode(['atualizado' => true, 'mensagem' => 'Atualizado com sucesso!', 'erro' => null]);
+            echo json_encode(["atualizado" => true, "mensagem" => "Atualizado com sucesso!", "erro" => null]);
         } catch (PDOException $e) {
             echo $e->getMessage();
-            echo json_encode(['atualizado' => false, 'mensagem' => 'Erro ao atualizar!', 'erro' => $e]);
+            echo json_encode(["atualizado" => false, "mensagem" => "Erro ao atualizar!", "erro" => $e]);
         }
     }
 
     //atualiza os dados do endereco
-    if ($sent_vars['funcao'] == 'atualizaEndereco') {
-        $cep = $sent_vars['cep'];
-        $logradouro = $sent_vars['logradouro'];
-        $bairro = $sent_vars['bairro'];
-        $numero = $sent_vars['numero'];
-        $cidade = $sent_vars['cidade'];
-        $uf = $sent_vars['uf'];
-        $complemento = $sent_vars['complemento'];
-        $idEndereco = $sent_vars['idEndereco'];
-        $principal = $sent_vars['principal'];
+    if ($sent_vars["funcao"] == "atualizaEndereco") {
+        $cep = $sent_vars["cep"];
+        $logradouro = $sent_vars["logradouro"];
+        $bairro = $sent_vars["bairro"];
+        $numero = $sent_vars["numero"];
+        $cidade = $sent_vars["cidade"];
+        $uf = $sent_vars["uf"];
+        $complemento = $sent_vars["complemento"];
+        $idEndereco = $sent_vars["idEndereco"];
+        $principal = $sent_vars["principal"];
 
         //rotina de atualização de endereço principal
         if ($principal) {
@@ -103,10 +102,10 @@ if ($method === 'PUT') {
             $statement->bindParam(8, $idEndereco);
 
             $statement->execute();
-            echo json_encode(['atualizado' => true, 'mensagem' => 'Atualizado com sucesso!', 'erro' => null]);
+            echo json_encode(["atualizado" => true, "mensagem" => "Atualizado com sucesso!", "erro" => null]);
         } catch (PDOException $e) {
             $e->getMessage();
-            echo json_encode(['atualizado' => false, 'mensagem' => 'Erro ao atualizar!', 'erro' => $e]);
+            echo json_encode(["atualizado" => false, "mensagem" => "Erro ao atualizar!", "erro" => $e]);
         }
     }
 }
