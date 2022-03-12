@@ -64,7 +64,8 @@ $("#salvar-novo-cadastro").on('click', (e) => {
     let email = document.getElementById("novo-email").value;
     let senha1 = document.getElementById("novo-senha1").value;
     let senha2 = document.getElementById("novo-senha2").value;
-
+    let nome = document.getElementById("novo-nome").value;
+    
     if (validaSenha(senha1, senha2)) {
 
         $.ajax({
@@ -73,7 +74,8 @@ $("#salvar-novo-cadastro").on('click', (e) => {
             data: {
                 funcao: 'cadastrarUsuario',
                 email: email,
-                senha: senha1
+                senha: senha1,
+                nome: nome
             },
             success: (data) => {
                 console.log(data)

@@ -37,12 +37,14 @@ if ($_POST['funcao'] == 'cadastrarUsuario') {
     try {
         $email = $_POST['email'];
         $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+        $nome = $_POST['nome'];
 
-        $query = "INSERT INTO usuario (email,senha) VALUES (?,?)";
+        $query = "INSERT INTO usuario (email,senha,nome) VALUES (?,?,?)";
 
         $statement = $conn->prepare($query);
         $statement->bindParam(1, $email);
         $statement->bindParam(2, $senha);
+        $statement->bindParam(3, $nome);
         $statement->execute();
 
         echo json_encode(['cadastrado' => true, 'mensagem' => 'Cadastro realizado com sucesso!', 'erro' => null]);
