@@ -34,7 +34,7 @@ if ($_POST['funcao'] == 'cadastrarCliente') {
         //INSERE ENDEREÇO
         for ($count = 0; $count <= (count($enderecos) - 1); $count++) {
             $stmt = $conn->prepare("INSERT INTO cliente_endereco (idcliente,logradouro,localidade,uf,bairro,complemento,cep,numero,principal) VALUES (?,?,?,?,?,?,?,?,?)");
-            $stmt->execute(array($lastInsertId, $enderecos[$count]['logradouro'], $enderecos[$count]['localidade'], $enderecos[$count]['uf'], $enderecos[$count]['bairro'], $enderecos[$count]['complemento'], $enderecos[$count]['cep'], $enderecos[$count]['numero'], $enderecos[$count]['principal'] ));
+            $stmt->execute(array($lastInsertId, $enderecos[$count]['logradouro'], $enderecos[$count]['localidade'], $enderecos[$count]['uf'], $enderecos[$count]['bairro'], $enderecos[$count]['complemento'], $enderecos[$count]['cep'], $enderecos[$count]['numero'], $enderecos[$count]['principal']));
         }
         echo json_encode(['cadastrado' => true, 'mensagem' => 'Cadastro realizado com sucesso!', 'erro' => null, 'query' => $statement]);
     } catch (PDOException $e) {
@@ -83,8 +83,8 @@ if ($_GET['funcao'] === 'listaClientes') {
 
     $emailUsuario = $_GET['emailUsuario'];
 
-    //query para cada usuario ver seus clientes e adm ver todos
-    $sql = "SELECT 
+    try {
+        $sql = "SELECT 
 	    c.*, 
         (select count(id) FROM cliente_endereco ce WHERE ce.ativo=1 AND ce.idcliente=c.id) AS qtd_endereco,
         (SELECT nome FROM usuario u WHERE u.id = c.idvendedor) as vendedor
@@ -99,10 +99,14 @@ if ($_GET['funcao'] === 'listaClientes') {
             ORDER BY c.id DESC    
         ";
 
-    $dados = $conn->query($sql);
-    $rows = $dados->fetchAll();
+        $dados = $conn->query($sql);
+        $rows = $dados->fetchAll();
 
-    echo json_encode($rows);
+        echo json_encode(['sucesso' => true, 'clientes' => $rows, 'erro' => null]);
+    } catch (PDOException $e) {
+        $e->getMessage();
+        echo json_encode(['sucesso' => false, 'clientes' => null, 'erro' => $e]);
+    }
 }
 
 if ($_GET['funcao'] == 'listaUsuarios') {
@@ -113,6 +117,37 @@ if ($_GET['funcao'] == 'listaUsuarios') {
     $rows = $dados->fetchAll();
 
     echo json_encode($rows);
+}
+
+if ($_GET['funcao'] == 'pesquisaCliente') {
+    $emailUsuario = $_GET['emailUsuario'];
+    $clientePesquisado = $_GET['clientePesquisado'];
+
+    try {
+        $sql = "SELECT 
+        c.*, 
+        (select count(id) FROM cliente_endereco ce WHERE ce.ativo=1 AND ce.idcliente=c.id) AS qtd_endereco,
+        (SELECT nome FROM usuario u WHERE u.id = c.idvendedor) as vendedor
+
+    FROM clientes c 
+
+    WHERE 
+        c.ativo='1' 
+    AND 
+        if((SELECT adm FROM usuario WHERE email = '$emailUsuario') > 0, 1, 
+        c.idvendedor IN (SELECT id FROM usuario WHERE email = '$emailUsuario'))
+    AND
+    c.nome like '%$clientePesquisado%'
+    ORDER BY c.id DESC";
+
+        $dados = $conn->query($sql);
+        $rows = $dados->fetchAll();
+
+        echo json_encode(['sucesso' => true, 'clientes' => $rows, 'erro' => null]);
+    } catch (PDOException $e) {
+        $e->getMessage();
+        echo json_encode(['sucesso' => false, 'clientes' => null, 'erro' => $e]);
+    }
 }
 
 ####################################### PUT ####################################### 

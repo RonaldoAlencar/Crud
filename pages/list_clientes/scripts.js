@@ -3,72 +3,34 @@ var email = localStorage.getItem('usuario')
 var permissoes;
 
 //ao abrir a página executa o select e traz tudo na tela
-$(document).ready(function () {
+$(document).ready(async function () {
+  let email_ = localStorage.getItem('usuario');
 
   //busca permissões do usuario
-  $.ajax({
-    url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
-    method: "get",
-    dataType: 'JSON',
-    success: function (data) {
-      permissoes = data;
-
-      //libera acessos a usuarios se usuario conectado for adm
-      if (data.adm) {
-        $("#nav-tabs").append(`
-          <li class="nav-item">
-            <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
-          </li>
-      `)
-      }
-
-    },
-    error: function (data) {
-    }
+  const { permissao } = await $.ajax({
+    url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email_}`,
+    method: "GET",
+    dataType: "JSON"
   });
+
+  permissoes = permissao;
+  //libera acessos a usuarios se usuario conectado for adm
+  if (permissao.adm) {
+    $("#nav-tabs").append(`
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
+            </li>
+        `)
+  }
 
   //cria lista de usuarios na tela
-  $.ajax({
+  const { clientes } = await $.ajax({
     url: `../../api/cliente/index.php?funcao=listaClientes&emailUsuario=${localStorage.getItem('usuario')}`,
     method: "get",
-    dataType: 'JSON',
-    success: function (response) {
-
-      console.log(permissoes.excluir)
-
-      for (var i = 0; i < response.length; i++) {
-        var id = response[i].id;
-        var nome = response[i].nome;
-        var email = response[i].email;
-        var cpf = response[i].cpf;
-        var rg = response[i].rg;
-        var qtd_endereco = response[i].qtd_endereco;
-        var vendedor = response[i].vendedor;
-
-        var tr_str = `<tr>
-        <th scope='row' id="id">${id}</th>
-          <td>${nome}</td>
-          <td>${email}</td>
-          <td>${cpf}</td>
-          <td>${rg}</td>
-          <td>${qtd_endereco}</td>
-          <td>${vendedor}</td>
-          <td>
-            <a href='../cad_edit_cliente/index.html?id=${id}' class='btn btn-success'>Visualizar</a>
-            <a type='button' class='btn btn-danger' id="btn-desativar" ${permissoes.excluir ? 'style="display: true"' : 'style="display: none"'} onclick="selecionaIdCliente(event.target)" data-bs-toggle='modal' data-bs-target='#exampleModal'>
-                Desativar
-            </a>
-          </td>
-        </tr>
-    `;
-
-        $("#body-table").append(tr_str);
-      }
-    },
-    error: function (xhr) {
-
-    }
+    dataType: 'JSON'
   });
+
+  constroiTabela(clientes, permissao);
 });
 
 //atualiza ativo do cliente do banco de dados
@@ -99,4 +61,51 @@ const selecionaIdCliente = (elementoClicado) => {
   elementoCliente = elementoClicado.closest("tr")
   //seleciona o id da linha
   idCliente = (el.children[0].innerHTML);
+}
+
+const pesquisarCliente = async (e) => {
+  let clientePesquisado = document.getElementById("input-pesquisa").value;
+
+  //remove elementos da tabela
+  $("td").remove();
+
+  const { clientes } = await $.ajax({
+    url: `../../api/cliente/index.php?funcao=pesquisaCliente&emailUsuario=${localStorage.getItem('usuario')}&clientePesquisado=${clientePesquisado}`,
+    method: "get",
+    dataType: 'JSON'
+  })
+
+  constroiTabela(clientes, permissoes)
+}
+
+const constroiTabela = (clientes, permissao) => {
+  for (var i = 0; i < clientes.length; i++) {
+
+    var id = clientes[i].id;
+    var nome = clientes[i].nome;
+    var email = clientes[i].email;
+    var cpf = clientes[i].cpf;
+    var rg = clientes[i].rg;
+    var qtd_endereco = clientes[i].qtd_endereco;
+    var vendedor = clientes[i].vendedor;
+
+    var tr_str = `<tr>
+      <td scope='row' id="id">${id}</td>
+        <td>${nome}</td>
+        <td>${email}</td>
+        <td>${cpf}</td>
+        <td>${rg}</td>
+        <td>${qtd_endereco}</td>
+        <td>${vendedor}</td>
+        <td>
+          <a href='../cad_edit_cliente/index.html?id=${id}' class='btn btn-success'>Visualizar</a>
+          <a type='button' class='btn btn-danger' id="btn-desativar" ${permissao.excluir ? 'style="display: true"' : 'style="display: none"'} onclick="selecionaIdCliente(event.target)" data-bs-toggle='modal' data-bs-target='#exampleModal'>
+              Desativar
+          </a>
+        </td>
+      </tr>
+  `;
+
+    $("#body-table").append(tr_str);
+  }
 }

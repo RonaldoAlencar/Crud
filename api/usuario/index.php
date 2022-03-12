@@ -9,11 +9,16 @@ if ($_GET['funcao'] == 'verificaPermissao') {
 
     $email = $_GET['email'];
 
-    $sql = "SELECT excluir, editar, cadastrar, adm FROM usuario WHERE email = '$email'";
-    $dados = $conn->query($sql);
-    $permissao = $dados->fetchAll();
+    try {
+        $sql = "SELECT excluir, editar, cadastrar, adm FROM usuario WHERE email = '$email'";
+        $dados = $conn->query($sql);
+        $permissao = $dados->fetchAll();
 
-    echo json_encode($permissao[0]);
+        echo json_encode(['sucesso' => true, 'permissao' => $permissao[0], 'erro' => $email]);
+    } catch (PDOException $e) {
+        $e->getMessage();
+        echo json_encode(['sucesso' => false, 'permissao' => null, 'erro' => $e]);
+    }
 }
 
 ####################################### POST ####################################### 
