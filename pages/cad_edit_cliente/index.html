@@ -29,7 +29,6 @@
     <div class="container d-flex justify-content-center">
         <form id="form-atualiza-edit-cliente" class="card p-4"
             style="margin-top: 10px; background-color: #F3F6F4; width: 100%;">
-
             <div class="row">
                 <div class="col-md-12">
                     <h1>Editar cliente</h1>
@@ -83,11 +82,9 @@
                 </div>
             </div>
             <div class="col-md-12 container d-flex justify-content-center mt-3">
-
                 <div class="col" id="address-client">
                     <h3>Endereços</h3>
                 </div>
-
             </div>
         </form>
     </div>
@@ -108,8 +105,10 @@
                                 <input type="text" class="form-control" name="cep" id="cep">
                             </div>
 
-                            <div class="col-md-6 d-flex mt-2" style="display: flex; justify-content: flex-start; align-items:center">
-                                <img src="https://tfile.com.br/consultarcep.com.br/upload/img/logo.png" style="cursor: pointer;" width="150px" height="40px" onclick="buscarEndereco()">
+                            <div class="col-md-6 d-flex mt-2"
+                                style="display: flex; justify-content: flex-start; align-items:center">
+                                <img src="https://tfile.com.br/consultarcep.com.br/upload/img/logo.png"
+                                    style="cursor: pointer;" width="150px" height="40px" onclick="buscarEndereco()">
                             </div>
                         </div>
 
@@ -146,11 +145,11 @@
                             <label for="complemento" class="col-form-label">complemento</label>
                             <textarea class="form-control" name="complemento" id="complemento"></textarea>
                         </div>
-                    </form>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" id="salvarEnderecoCliente" class="btn btn-primary" data-bs-dismiss="modal">Gravar</button>
+                        <div class="modal-footer">
+                            <button id="salvarEnderecoCliente" class="btn btn-primary">Gravar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -175,15 +174,16 @@
                             </label>
                         </div>
 
-
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="cep_alterar" class="col-form-label">CEP</label>
                                 <input type="text" class="form-control" name="cep_alterar" id="cep_alterar">
                             </div>
 
-                            <div class="col-md-6 d-flex mt-2" style="display: flex; justify-content: flex-start; align-items:center">
-                                <img src="https://tfile.com.br/consultarcep.com.br/upload/img/logo.png" style="cursor: pointer;" width="150px" height="40px" onclick="buscarEndereco()">
+                            <div class="col-md-6 d-flex mt-2"
+                                style="display: flex; justify-content: flex-start; align-items:center">
+                                <img src="https://tfile.com.br/consultarcep.com.br/upload/img/logo.png"
+                                    style="cursor: pointer;" width="150px" height="40px" onclick="buscarEndereco()">
                             </div>
                         </div>
 
@@ -218,15 +218,15 @@
 
                         <div class="col-md-12">
                             <label for="complemento_alterar" class="col-form-label">complemento</label>
-                            <textarea class="form-control" name="complemento_alterar" id="complemento_alterar"></textarea>
+                            <textarea class="form-control" name="complemento_alterar"
+                                id="complemento_alterar"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="alterarEnderecoCliente" class="btn btn-primary">Gravar</button>
                         </div>
                     </form>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" id="alterarEnderecoCliente" class="btn btn-primary"
-                        data-bs-dismiss="modal">Gravar</button>
-                </div>
             </div>
         </div>
     </div>

@@ -50,12 +50,21 @@ if ($_GET["funcao"] == "clientePorId") {
 
     try {
         //seleciona cliente
-        $sql = "SELECT * FROM clientes WHERE id = '$id'";
+        $sql = "SELECT 
+                    id, nome,
+                    INSERT(INSERT(INSERT(cpf,10,0,'-'),7,0,'.'),4, 0,'.') cpf, 
+                    INSERT(INSERT(INSERT(rg,9,0,'-'),6,0,'.'),3, 0,'.') rg, email, data_nascimento, 
+                    INSERT(INSERT(INSERT(telefone1,8,0,'-'),3, 0,')'),1,0,'(') telefone1, 
+                    INSERT(INSERT(INSERT(telefone2,9,0,'-'),3, 0,')'),1,0,'(') telefone2, 
+                    ativo, idvendedor 
+                FROM clientes WHERE id = '$id';"
+        ;
+
         $dados = $conn->query($sql);
         $cliente = $dados->fetchAll();
 
         //seleciona endereços do cliente
-        $sql = "SELECT * FROM cliente_endereco WHERE idcliente = '$id' AND ativo=1";
+        $sql = "SELECT * FROM cliente_endereco WHERE idcliente = '$id' AND ativo=1 ORDER BY principal DESC";
         $dados = $conn->query($sql);
         $enderecos = $dados->fetchAll();
 
@@ -86,18 +95,23 @@ if ($_GET["funcao"] === "listaClientes") {
     try {
         //Select dinâmico para exibir clientes do vendedor, ou se for ADM mostra todos os clientes
         $sql = "SELECT 
-	    c.*, 
-        (select count(id) FROM cliente_endereco ce WHERE ce.ativo=1 AND ce.idcliente=c.id) AS qtd_endereco,
-        (SELECT nome FROM usuario u WHERE u.id = c.idvendedor) as vendedor
+	                c.id, c.nome,
+                    INSERT(INSERT(INSERT(c.cpf,10,0,'-'),7,0,'.'),4, 0,'.') cpf, 
+                    INSERT(INSERT(INSERT(c.rg,9,0,'-'),6,0,'.'),3, 0,'.') rg, email, data_nascimento, 
+                    INSERT(INSERT(INSERT(c.telefone1,8,0,'-'),3, 0,')'),1,0,'(') telefone1, 
+                    INSERT(INSERT(INSERT(c.telefone2,9,0,'-'),3, 0,')'),1,0,'(') telefone2, 
+                    c.ativo, c.idvendedor,
+                    (SELECT count(id) FROM cliente_endereco ce WHERE ce.ativo=1 AND ce.idcliente=c.id) AS qtd_endereco,
+                    (SELECT nome FROM usuario u WHERE u.id = c.idvendedor) as vendedor
     
-        FROM clientes c 
+                FROM clientes c 
 
-        WHERE 
-            c.ativo='1' 
-            AND 
-	        if((SELECT adm FROM usuario WHERE email = '$emailUsuario') > 0, 1, 
-            c.idvendedor IN (SELECT id FROM usuario WHERE email = '$emailUsuario'))
-            ORDER BY c.id DESC    
+                WHERE 
+                    c.ativo='1' 
+                    AND 
+                    if((SELECT adm FROM usuario WHERE email = '$emailUsuario') > 0, 1, 
+                    c.idvendedor IN (SELECT id FROM usuario WHERE email = '$emailUsuario'))
+                    ORDER BY c.id DESC    
         ";
 
         $dados = $conn->query($sql);

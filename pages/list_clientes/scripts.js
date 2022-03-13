@@ -4,11 +4,10 @@ var permissoes;
 
 //ao abrir a página executa o select e traz tudo na tela
 $(document).ready(async function () {
-  let email_ = localStorage.getItem('usuario');
 
   //busca permissões do usuario
   const { permissao } = await $.ajax({
-    url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email_}`,
+    url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
     method: "GET",
     dataType: "JSON"
   });
@@ -43,12 +42,6 @@ $("#remove-client").on("click", async (e) => {
     data: {
       funcao: 'atualizarAtivoCliente',
       idCliente: idCliente
-    },
-    success: function (response) {
-
-    },
-    error: function (xhr) {
-
     }
   });
 

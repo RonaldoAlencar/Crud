@@ -51,10 +51,75 @@ $("#removerEnderecoCliente").on("click", async (e) => {
 })
 
 //atualiza dados do cliente
-$("#atualizarCliente").on("click", async (e) => {
-    //pega o id do cliente pela url
-    e.preventDefault();
-
+$("#form-atualiza-edit-cliente").bootstrapValidator({
+    fields: {
+        nome: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O nome é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        cpf: {
+            validators: {
+                stringLength: {
+                    min: 14,
+                    message: "<small style='color: red;'>CPF inválido!</small>"
+                },
+                notEmpty: {
+                    message: "<small style='color: red;'>O CPF é obrigatório!</small>"
+                },
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O email é obrigatório!</small>"
+                },
+                emailAddress: {
+                    message: "<small style='color: red;'>O email inserido não é válido</small>"
+                }
+            }
+        },
+        rg: {
+            validators: {
+                stringLength: {
+                    min: 11,
+                    message: "<small style='color: red;'>RG inválido!</small>"
+                },
+                notEmpty: {
+                    message: "<small style='color: red;'>O RG é obrigatório!</small>"
+                },
+            }
+        },
+        telefone1: {
+            validators: {
+                stringLength: {
+                    min: 14,
+                    message: "<small style='color: red;'>Telefone inválido!</small>"
+                },
+                notEmpty: {
+                    message: "<small style='color: red;'>O telefone1 é obrigatório!</small>"
+                }
+            }
+        },
+        'data-nasc': {
+            validators: {
+                stringLength: {
+                    min: 10,
+                    message: "<small style='color: red;'>Data de nascimento inválida</small>"
+                },
+                notEmpty: {
+                    message: "<small style='color: red;'>A data de nascimento é obrigatória!</small>"
+                },
+            }
+        },
+    }
+}).on('success.form.bv', async function (e) {
     const response = await $.ajax({
         url: '../../api/cliente/index.php',
         type: "PUT",
@@ -77,36 +142,70 @@ $("#atualizarCliente").on("click", async (e) => {
     } else {
         window.location = `?sucesso=false&id=${idCliente}`;
     }
-});
-
-//atualiza endereço do cliente
-$("#alterarEnderecoCliente").on("click", async (e) => {
-    const response = await $.ajax({
-        url: "../../api/endereco/index.php",
-        type: "PUT",
-        dataType: "JSON",
-        data: {
-            funcao: "atualizaEndereco",
-            cep: document.getElementById("cep_alterar").value,
-            logradouro: document.getElementById("logradouro_alterar").value,
-            bairro: document.getElementById("bairro_alterar").value,
-            numero: document.getElementById("numero_alterar").value,
-            cidade: document.getElementById("cidade_alterar").value,
-            uf: document.getElementById("uf_alterar").value,
-            complemento: document.getElementById("complemento_alterar").value,
-            idEndereco: idEnderecoClicado,
-            principal: document.getElementById("checkbox-endereco-principal").checked ? 1 : 0
-        }
-    });
-
-    if (response.atualizado) {
-        window.location = `?sucessoAtualizaEndereco=true&id=${idCliente}`;
-    } else {
-        window.location = `?sucessoAtualizaEndereco=false&id=${idCliente}`;
-    }
 })
 
-$("#salvarEnderecoCliente").on("click", async (e) =>{
+$("#form-novo-endereco-edit-cliente").bootstrapValidator({
+    fields: {
+        cep: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O cep é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 9,
+                    message: "<small style='color: red;'>Cep inválido!</small>"
+                }
+            }
+        },
+        logradouro: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O logradouro é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        bairro: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O bairro é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        numero: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>Obrigatório!</small>"
+                },
+            },
+        },
+        cidade: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>A cidade é obrigatória!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        uf: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>A uf é obrigatória!</small>"
+                }
+            },
+        },
+    }
+}).on('success.form.bv', async function (e) {
     let logradouro = document.getElementById("logradouro").value;
     let localidade = document.getElementById("cidade").value;
     let uf = document.getElementById("uf").value;
@@ -137,7 +236,93 @@ $("#salvarEnderecoCliente").on("click", async (e) =>{
     } else {
         window.location = `?sucesso=false&id=${idCliente}`;
     }
+})
 
+$("#form-altera-endereco-edit-cliente").bootstrapValidator({
+    fields: {
+        cep_alterar: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O cep é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 9,
+                    message: "<small style='color: red;'>Cep inválido!</small>"
+                }
+            }
+        },
+        logradouro_alterar: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O logradouro é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        bairro_alterar: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O bairro é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        numero_alterar: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>Obrigatório!</small>"
+                },
+            },
+        },
+        cidade_alterar: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>A cidade é obrigatória!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        uf_alterar: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>A uf é obrigatória!</small>"
+                }
+            },
+        },
+    }
+}).on('success.form.bv', async function (e) {
+    const response = await $.ajax({
+        url: "../../api/endereco/index.php",
+        type: "PUT",
+        dataType: "JSON",
+        data: {
+            funcao: "atualizaEndereco",
+            cep: document.getElementById("cep_alterar").value,
+            logradouro: document.getElementById("logradouro_alterar").value,
+            bairro: document.getElementById("bairro_alterar").value,
+            numero: document.getElementById("numero_alterar").value,
+            cidade: document.getElementById("cidade_alterar").value,
+            uf: document.getElementById("uf_alterar").value,
+            complemento: document.getElementById("complemento_alterar").value,
+            idEndereco: idEnderecoClicado,
+            principal: document.getElementById("checkbox-endereco-principal").checked ? 1 : 0
+        }
+    });
+
+    if (response.atualizado) {
+        window.location = `?sucessoAtualizaEndereco=true&id=${idCliente}`;
+    } else {
+        window.location = `?sucessoAtualizaEndereco=false&id=${idCliente}`;
+    }
 })
 
 //insere endereços na tela
@@ -182,7 +367,7 @@ const atualizaEnderecoTela = (enderecos) => {
 //seleciona o id do endereço do cliente a ser apagado apos confirmação
 const removeEnderecoCliente = async (elementoClicado, principal) => {
     if (principal) {
-        toastPersonalizado("Não pode remover o endereço principal", "aviso")
+        toastPersonalizado("Não pode remover o endereço principal", "erro")
         return
     }
 
