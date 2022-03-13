@@ -28,16 +28,16 @@ $(document).ready(async function () {
 });
 
 //validação dos dados preenchidos no form de cadastro de clientes
-$('#form-cadastro-cliente').bootstrapValidator({
+$("#form-cadastro-cliente").bootstrapValidator({
     fields: {
         nome: {
             validators: {
                 notEmpty: {
-                    message: '<small style="color: red;">O nome é obrigatório!</small>'
+                    message: "<small style='color: red;'>O nome é obrigatório!</small>"
                 },
                 stringLength: {
                     min: 3,
-                    message: '<small style="color: red;">A quantidade mínima de caracteres é 3!</small>'
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
                 }
             },
         },
@@ -45,20 +45,20 @@ $('#form-cadastro-cliente').bootstrapValidator({
             validators: {
                 stringLength: {
                     min: 14,
-                    message: '<small style="color: red;">CPF inválido!</small>'
+                    message: "<small style='color: red;'>CPF inválido!</small>"
                 },
                 notEmpty: {
-                    message: '<small style="color: red;">O CPF é obrigatório!</small>'
+                    message: "<small style='color: red;'>O CPF é obrigatório!</small>"
                 },
             }
         },
         email: {
             validators: {
                 notEmpty: {
-                    message: '<small style="color: red;">O email é obrigatório!</small>'
+                    message: "<small style='color: red;'>O email é obrigatório!</small>"
                 },
                 emailAddress: {
-                    message: '<small style="color: red;">O email inserido não é válido</small>'
+                    message: "<small style='color: red;'>O email inserido não é válido</small>"
                 }
             }
         },
@@ -66,10 +66,10 @@ $('#form-cadastro-cliente').bootstrapValidator({
             validators: {
                 stringLength: {
                     min: 11,
-                    message: '<small style="color: red;">RG inválido!</small>'
+                    message: "<small style='color: red;'>RG inválido!</small>"
                 },
                 notEmpty: {
-                    message: '<small style="color: red;">O RG é obrigatório!</small>'
+                    message: "<small style='color: red;'>O RG é obrigatório!</small>"
                 },
             }
         },
@@ -77,10 +77,10 @@ $('#form-cadastro-cliente').bootstrapValidator({
             validators: {
                 stringLength: {
                     min: 14,
-                    message: '<small style="color: red;">Telefone inválido!</small>'
+                    message: "<small style='color: red;'>Telefone inválido!</small>"
                 },
                 notEmpty: {
-                    message: '<small style="color: red;">O telefone1 é obrigatório!</small>'
+                    message: "<small style='color: red;'>O telefone1 é obrigatório!</small>"
                 }
             }
         },
@@ -88,10 +88,10 @@ $('#form-cadastro-cliente').bootstrapValidator({
             validators: {
                 stringLength: {
                     min: 10,
-                    message: '<small style="color: red;">Data de nascimento inválida</small>'
+                    message: "<small style='color: red;'>Data de nascimento inválida</small>"
                 },
                 notEmpty: {
-                    message: '<small style="color: red;">A data de nascimento é obrigatória!</small>'
+                    message: "<small style='color: red;'>A data de nascimento é obrigatória!</small>"
                 },
             }
         },
@@ -118,10 +118,10 @@ $('#form-cadastro-cliente').bootstrapValidator({
         //se cadastrado insere informação na tela
         if (response.cadastrado) {
             $('#mensagem-retorno').append(`
-                <div class="alert alert-success" id="info" role="alert">
-                    Cadastrado com sucesso!
-                </div>  
-            `);
+                 <div class="alert alert-success" id="info" role="alert">
+                     Cadastrado com sucesso!
+                 </div>  
+             `);
             //Removendo a div de endereços
             var node = document.getElementById("endereco-cliente");
             if (node.parentNode) node.parentNode.removeChild(node);
@@ -130,10 +130,10 @@ $('#form-cadastro-cliente').bootstrapValidator({
             document.getElementById("form-cadastro-cliente").reset();
         } else {
             $('#mensagem-retorno').append(`
-                <div class="alert alert-danger" id="info" role="alert">
-                    Erro ao realizar cadastro!
-                </div>  
-            `);
+                 <div class="alert alert-danger" id="info" role="alert">
+                     Erro ao realizar cadastro!
+                 </div>  
+             `);
         }
 
         //remove informação depois de 5 segundos
@@ -144,9 +144,71 @@ $('#form-cadastro-cliente').bootstrapValidator({
     }
 })
 
-//salva endereço em array
-$("#cadastrar-endereco-cliente").on("click", async (e) => {
+$("#form-endereco-cliente").bootstrapValidator({
+    fields: {
+        cep: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O cep é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 9,
+                    message: "<small style='color: red;'>Cep inválido!</small>"
+                }
+            }
+        },
+        logradouro: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O logradouro é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        bairro: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>O bairro é obrigatório!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        numero: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>Obrigatório!</small>"
+                },
+            },
+        },
+        cidade: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>A cidade é obrigatória!</small>"
+                },
+                stringLength: {
+                    min: 3,
+                    message: "<small style='color: red;'>A quantidade mínima de caracteres é 3!</small>"
+                }
+            },
+        },
+        uf: {
+            validators: {
+                notEmpty: {
+                    message: "<small style='color: red;'>A uf é obrigatória!</small>"
+                }
+            },
+        },
+    }
+}).on('success.form.bv', async function (e) {
+    $('#modalEndereco').modal('hide');
 
+    //salva endereço no array
     let logradouro = document.getElementById('logradouro').value;
     let localidade = document.getElementById('cidade').value;
     let uf = document.getElementById('uf').value;
@@ -154,12 +216,14 @@ $("#cadastrar-endereco-cliente").on("click", async (e) => {
     let numero = document.getElementById('numero').value;
     let complemento = document.getElementById('complemento')?.value;
     let cep = document.getElementById('cep').value;
+    document.getElementById("form-endereco-cliente").reset();
 
     //adiciona no array para enviar osteriormente ao banco de dados
     enderecos.push({ id: posicaoArray, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: posicaoArray == 0 ? 1 : 0 })
     //atualiza na tela com os dados
     atualizaEnderecoClienteTela({ id: posicaoArray, logradouro, localidade, uf, bairro, numero, complemento, cep, principal: posicaoArray == 0 ? 1 : 0 })
     posicaoArray++;
+    //limpa campos do formulário
     return
 })
 
@@ -203,4 +267,8 @@ const atualizaEnderecoClienteTela = async (endereco) => {
     `;
 
     $("#endereco-cliente").append(tr_str);
+}
+
+const escondeModal = () =>{
+    $('#modalEndereco').modal('hide');
 }

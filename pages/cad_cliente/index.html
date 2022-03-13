@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="../styles.css">
-    
+
     <title>Cadastro cliente</title>
 </head>
 
@@ -32,7 +33,8 @@
                 <h1>Cadastro de novo cliente</h1>
                 <div class="form-group pb-3">
                     <label>Nome</label>
-                    <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="nome" name="nome" required>
+                    <input type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="nome"
+                        name="nome" required>
                 </div>
 
                 <div class="row pb-3">
@@ -43,13 +45,15 @@
 
                     <div class="form-group col-md-6">
                         <label for="rg">RG</label>
-                        <input required type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" id="rg" name="rg">
+                        <input required type="text" oninput="this.value = this.value.toUpperCase()" class="form-control"
+                            id="rg" name="rg">
                     </div>
                 </div>
 
                 <div class="form-group pb-3">
                     <label for="email">E-mail</label>
-                    <input required type="email" oninput="this.value = this.value.toUpperCase()" class="form-control" id="email" name="email">
+                    <input required type="email" oninput="this.value = this.value.toUpperCase()" class="form-control"
+                        id="email" name="email">
                 </div>
 
                 <div class="row pb-3">
@@ -94,79 +98,80 @@
 
     <!-- Modal -->
     <div class="modal fade" id="modalEndereco" tabindex="-1" aria-labelledby="modalEndereco" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalEndereco">Cadastro de novo endereço</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="form-endereco-cliente">
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="cep" class="col-form-label">CEP</label>
-                                <input type="text" class="form-control" id="cep">
+                                <input type="text" name="cep" class="form-control" id="cep">
                             </div>
 
-                            <div class="col-md-6 d-flex mt-2">
-                                <button type="button" onclick="buscarEndereco()" class="btn btn-info">Buscar
-                                    endereço</button>
+                            <div class="col-md-6 d-flex mt-2" style="display: flex; justify-content: flex-start; align-items:center">
+                                <img src="https://tfile.com.br/consultarcep.com.br/upload/img/logo.png" style="cursor: pointer;" width="150px" height="40px" onclick="buscarEndereco()">
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <label for="logradouro" class="col-form-label">Logradouro</label>
-                            <input class="form-control" id="logradouro"></input>
+                            <input class="form-control" name="logradouro" id="logradouro"></input>
                         </div>
 
                         <div class="row">
 
                             <div class="col-md-10">
                                 <label for="bairro" class="col-form-label">Bairro</label>
-                                <input class="form-control" id="bairro"></input>
+                                <input class="form-control" name="bairro" id="bairro"></input>
                             </div>
 
                             <div class="col-md-2">
                                 <label for="numero" class="col-form-label">N</label>
-                                <input class="form-control" id="numero"></input>
+                                <input class="form-control" name="numero" id="numero"></input>
                             </div>
                         </div>
 
                         <div class="row">
-
                             <div class="col-md-10">
                                 <label for="cidade" class="col-form-label">Cidade</label>
-                                <input class="form-control" id="cidade"></input>
+                                <input class="form-control" name="cidade" id="cidade"></input>
                             </div>
 
                             <div class="col-md-2">
                                 <label for="uf" class="col-form-label">UF</label>
-                                <input class="form-control" id="uf"></input>
+                                <input class="form-control" name="uf" id="uf"></input>
                             </div>
-
                         </div>
 
                         <div class="col-md-12">
                             <label for="complemento" class="col-form-label">complemento</label>
-                            <textarea class="form-control" id="complemento"></textarea>
+                            <textarea class="form-control" name="complemento" id="complemento"></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="cadastrar-endereco-cliente" class="btn btn-primary">Gravar</button>
                         </div>
                     </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" id="cadastrar-endereco-cliente" class="btn btn-primary"
-                        data-bs-dismiss="modal">Gravar</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js" integrity="sha512-Vp2UimVVK8kNOjXqqj/B0Fyo96SDPj9OCSm1vmYSrLYF3mwIOBXh/yRZDVKo8NemQn1GUjjK0vFJuCSCkYai/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"
+        integrity="sha512-Vp2UimVVK8kNOjXqqj/B0Fyo96SDPj9OCSm1vmYSrLYF3mwIOBXh/yRZDVKo8NemQn1GUjjK0vFJuCSCkYai/A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="./scripts.js"></script>
     <script src="../scripts.js"></script>
