@@ -1,14 +1,15 @@
 const parametrosURL = new URLSearchParams(window.location.search);
-const idCliente = parametrosURL.get('id');
-const email = localStorage.getItem('usuario')
+const idCliente = parametrosURL.get("id");
+const email = localStorage.getItem("usuario")
 var idEnderecoClicado;
 
 //no carregar da tela, alimenta os input com os dados do banco de dados
 $(document).ready(async function () {
 
-    if (parametrosURL.get('sucesso')) toastPersonalizado("Cadastro atualizado com sucesso", "sucesso");
-    if (parametrosURL.get('sucessoAtualizaEndereco')) toastPersonalizado("Endereço atualizado com sucesso", "sucesso");
-    if (parametrosURL.get('sucessoRemoveEndereco')) toastPersonalizado("Endereço removido com sucesso", "sucesso");
+    //exibições de toasts pelo redirecionamento da rota
+    if (parametrosURL.get("sucesso")) toastPersonalizado("Cadastro atualizado com sucesso", "sucesso");
+    if (parametrosURL.get("sucessoAtualizaEndereco")) toastPersonalizado("Endereço atualizado com sucesso", "sucesso");
+    if (parametrosURL.get("sucessoRemoveEndereco")) toastPersonalizado("Endereço removido com sucesso", "sucesso");
 
     const response = await $.ajax({
         url: `../../api/cliente/index.php?funcao=clientePorId&id=${idCliente}`,
@@ -16,7 +17,6 @@ $(document).ready(async function () {
         dataType: "JSON"
     });
 
-    //alimenta campos do frontEnd
     document.getElementById("nome").value = response[0]['nome'];
     document.getElementById("cpf").value = response[0]['cpf'];
     document.getElementById("rg").value = response[0]['rg'];
@@ -27,18 +27,18 @@ $(document).ready(async function () {
     document.getElementById("data_nascimento").value = response[0]['data_nascimento'];
 
     //alimenta endereços do cliente
-    updateFrontEndEndereco(response)
+    atualizaEnderecoTela(response)
 });
 
 //atualiza ativo do endereço do cliente do banco de dados
-$("#remove-address-client").on("click", async (e) => {
+$("#removerEnderecoCliente").on("click", async (e) => {
 
     const response = await $.ajax({
-        url: '../../api/endereco/index.php',
+        url: "../../api/endereco/index.php",
         type: "PUT",
-        dataType: 'JSON',
+        dataType: "JSON",
         data: {
-            funcao: 'atualizarAtivoEnderecoCliente',
+            funcao: "atualizarAtivoEnderecoCliente",
             idEndCli: idEnderecoClicado
         }
     });
@@ -51,7 +51,7 @@ $("#remove-address-client").on("click", async (e) => {
 })
 
 //atualiza dados do cliente
-$("#btn-update-client").on("click", async (e) => {
+$("#atualizarCliente").on("click", async (e) => {
     //pega o id do cliente pela url
     e.preventDefault();
 
@@ -80,13 +80,13 @@ $("#btn-update-client").on("click", async (e) => {
 });
 
 //atualiza endereço do cliente
-$("#alter-address-client").on('click', async (e) => {
+$("#alterarEnderecoCliente").on("click", async (e) => {
     const response = await $.ajax({
-        url: '../../api/endereco/index.php',
+        url: "../../api/endereco/index.php",
         type: "PUT",
-        dataType: 'JSON',
+        dataType: "JSON",
         data: {
-            funcao: 'atualizaEndereco',
+            funcao: "atualizaEndereco",
             cep: document.getElementById("cep_alterar").value,
             logradouro: document.getElementById("logradouro_alterar").value,
             bairro: document.getElementById("bairro_alterar").value,
@@ -106,20 +106,20 @@ $("#alter-address-client").on('click', async (e) => {
     }
 })
 
-$("#save-address-client").on("click", async (e) =>{
-    let logradouro = document.getElementById('logradouro').value;
-    let localidade = document.getElementById('cidade').value;
-    let uf = document.getElementById('uf').value;
-    let bairro = document.getElementById('bairro').value;
-    let numero = document.getElementById('numero').value;
-    let complemento = document.getElementById('complemento')?.value;
-    let cep = document.getElementById('cep').value;
+$("#salvarEnderecoCliente").on("click", async (e) =>{
+    let logradouro = document.getElementById("logradouro").value;
+    let localidade = document.getElementById("cidade").value;
+    let uf = document.getElementById("uf").value;
+    let bairro = document.getElementById("bairro").value;
+    let numero = document.getElementById("numero").value;
+    let complemento = document.getElementById("complemento")?.value;
+    let cep = document.getElementById("cep").value;
 
     const response = await $.ajax({
         method: "POST",
-        url: '../../api/endereco/index.php',
+        url: "../../api/endereco/index.php",
         data: {
-            funcao: 'cadastrarNovoEndereco',
+            funcao: "cadastrarNovoEndereco",
             logradouro,
             localidade,
             uf,
@@ -141,7 +141,7 @@ $("#save-address-client").on("click", async (e) =>{
 })
 
 //insere endereços na tela
-const updateFrontEndEndereco = (enderecos) => {
+const atualizaEnderecoTela = (enderecos) => {
 
     //percorre enderecos, começa no array 1
     for (var i = 0; i <= enderecos[1].length - 1; i++) {
@@ -165,8 +165,7 @@ const updateFrontEndEndereco = (enderecos) => {
                 <a type='button' id='btn-delete' class='btn btn-danger btn-sm' onclick='removeEnderecoCliente(event.target, ${principal})'>
                     Remover
                 </a>
-
-                <a type='button' id='btn-edit' class='btn btn-info btn-sm' onclick='alteraEndCliente(${JSON.stringify(enderecos[1][i])})' data-bs-toggle='modal' data-bs-target='#modalAlteraEndereco'>
+                <a type='button' id='btn-edit' class='btn btn-info btn-sm' onclick='alteraEndCliente(${JSON.stringify(enderecos[1][i])})' data-bs-toggle='modal' data-bs-target='#alteraEnderecoModal'>
                     Editar
                 </a>
             </div>
@@ -208,7 +207,6 @@ const alteraEndCliente = (endereco) => {
 }
 
 const verificaPermissao = async () => {
-    let email = localStorage.getItem('usuario')
     const { permissao } = await $.ajax({
         url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,
         method: "GET",
@@ -218,8 +216,8 @@ const verificaPermissao = async () => {
     //verifica permissão de editar, se não esconde botões
     if (!permissao.editar) {
         document.getElementById("btn-edit").setAttribute("hidden", "")
-        document.getElementById("btn-update-client").setAttribute("hidden", "")
-        document.getElementById("new-address").setAttribute("hidden", "")
+        document.getElementById("atualizarCliente").setAttribute("hidden", "")
+        document.getElementById("novoEndereco").setAttribute("hidden", "")
     }
     if (!permissao.excluir) {
         document.getElementById("btn-delete").setAttribute("hidden", "")
