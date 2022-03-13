@@ -115,6 +115,12 @@ $("#form-cadastro-cliente").bootstrapValidator({
                 emailUsuario: localStorage.getItem('usuario')
             }
         });
+
+        if (response.erro && response.erro['errorInfo'][2].includes("Duplicate entry")) {
+            toastPersonalizado("CPF inserido já possui cadastro no sistema!", "erro")
+            return
+        }
+
         //se cadastrado insere informação na tela
         if (response.cadastrado) {
             $('#mensagem-retorno').append(`
@@ -136,10 +142,9 @@ $("#form-cadastro-cliente").bootstrapValidator({
              `);
         }
 
-        //remove informação depois de 5 segundos
+        //remove informação de sucesso/erro depois de 5 segundos
         setTimeout(() => {
             $("div").remove("#info");
-            location.reload()
         }, 5000);
     }
 })
@@ -269,6 +274,6 @@ const atualizaEnderecoClienteTela = async (endereco) => {
     $("#endereco-cliente").append(tr_str);
 }
 
-const escondeModal = () =>{
+const escondeModal = () => {
     $('#modalEndereco').modal('hide');
 }
