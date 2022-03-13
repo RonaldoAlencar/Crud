@@ -56,6 +56,12 @@ const selecionaIdCliente = (elementoClicado) => {
   idCliente = (el.children[0].innerHTML);
 }
 
+//quando precissionado o enter no teclado, executa a função de pesquisa cliente
+document.getElementById('input-pesquisa'); addEventListener('keyup', function (e) {
+  var key = e.which || e.keyCode;
+  if (key == 13) pesquisarCliente();
+})
+
 const pesquisarCliente = async (e) => {
   let clientePesquisado = document.getElementById("input-pesquisa").value;
 

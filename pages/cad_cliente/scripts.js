@@ -149,6 +149,7 @@ $("#form-cadastro-cliente").bootstrapValidator({
     }
 })
 
+//validação dos dados preenchidos no modal de endereço
 $("#form-endereco-cliente").bootstrapValidator({
     fields: {
         cep: {
