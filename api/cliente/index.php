@@ -124,16 +124,6 @@ if ($_GET["funcao"] === "listaClientes") {
     }
 }
 
-if ($_GET["funcao"] == "listaUsuarios") {
-
-    $sql = "SELECT * FROM usuario";
-
-    $dados = $conn->query($sql);
-    $rows = $dados->fetchAll();
-
-    echo json_encode($rows);
-}
-
 if ($_GET["funcao"] == "pesquisaCliente") {
     $emailUsuario = $_GET["emailUsuario"];
     $clientePesquisado = $_GET["clientePesquisado"];

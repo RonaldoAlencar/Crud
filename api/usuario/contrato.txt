@@ -1,19 +1,50 @@
-{   ## logar ## método POST
+{   ## verificaPermissao ## método GET 
+    
+    {
+        funcao: "verificaPermissao",
+        email: string
+    }
+
+    return {
+        sucesso: true || false,
+        permissao: Object|| null,
+        erro: null, PDOException error
+   
+    }
+}
+
+{   ## logar ## método GET
 
     {
+        funcao: "logar",
         email: string,
         senha: string
     }
 
     return {
         conectado: true || false,
-        mensagem: "Conectado com sucesso!" || "Erro ao realizar login"
+        mensagem: "Conectado com sucesso!" || "Erro ao realizar login",
+        usuario: string, null
+    }
+}
+
+{   ## listaUsuarios ## método GET
+
+    {
+        funcao: 'listaUsuarios'
+    }
+
+    {
+        return {
+            usuario: array
+        }
     }
 }
 
 {   ## cadastrarUsuario  ## método POST
 
     {
+        funcao: "cadastrarUsuario"
         email: string,
         senha: string
     }
@@ -28,10 +59,11 @@
 {   ## atualizarPermissoes ## método PUT
 
     {
-        excluir: 0 || 1,
-        editar: 0 || 1,
-        cadastrar: 0 || 1,
-        adm: 0 || 1,
+        funcao: "atualizarPermissoes"
+        excluir: int 0 || 1,
+        editar: int 0 || 1,
+        cadastrar: int 0 || 1,
+        adm: int 0 || 1,
         idUsuario: int
     }
 

@@ -1,7 +1,30 @@
+{   ## cadastrarNovoEndereco ## método PUT
+
+    {   
+        funcao: 'cadastrarNovoEndereco',
+        logradouro: string,
+        localidade: string,
+        uf: string,
+        bairro: string,
+        numero: string,
+        complemento: string,
+        cep: string,
+        idCliente: int,
+        principal: int
+    }
+
+    return{
+        cadastrado: true || false,
+        mensagem: Cadastro realizado com sucesso! || Erro ao realizar cadastro!
+        erro: null || PDOException error
+    }
+}
+
 {   ## atualizarAtivoEnderecoCliente ## método PUT
 
     {
-        idEnderecoClicado: int
+        funcao: 'atualizarAtivoEnderecoCliente',
+        idEndCli: int
     }
 
     return{
@@ -14,6 +37,7 @@
 {   ## atualizaEndereco ## método PUT
     
     {
+        funcao: 'atualizaEndereco',
         cep: string,
         logradouro: string,
         bairro: string,
@@ -21,7 +45,8 @@
         cidade: string,
         uf: string,
         complemento: string,
-        idEndereco: string
+        idEndereco: int,
+        principal: int
     }
 
     return{

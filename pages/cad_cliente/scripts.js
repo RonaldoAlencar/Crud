@@ -1,9 +1,11 @@
 var enderecos = []
 var posicaoArray = 0;
+const parametrosURL = new URLSearchParams(window.location.search);
 
 //################################## funções ajax#################################
 $(document).ready(async function () {
     let email = localStorage.getItem("usuario");
+    if (parametrosURL.get("saudacao")) toastPersonalizado("Bem vindo", "sucesso");
 
     const { permissao } = await $.ajax({
         url: `../../api/usuario/index.php?funcao=verificaPermissao&email=${email}`,

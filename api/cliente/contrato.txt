@@ -1,6 +1,7 @@
 {   ## cadastrarCliente ## método POST
 
     {
+        funcao: 'cadastrarCliente',
         nome: string, 
         cpf: string,  
         rg: string, 
@@ -19,9 +20,10 @@
     }
 }
 
-{   ## CLIENTE POR ID ## método GET
+{   ## clientePorId## método GET
     
     {
+        funcao: 'clientePorId',
         id: int
     }
 
@@ -34,6 +36,7 @@
 {   ## qtdEndAtivo ## método GET
 
     {
+        funcao: 'qtdEndAtivo',
         id: int
     }
 
@@ -45,36 +48,36 @@
 {   ## listaClientes ## método GET
 
     {
+        funcao: 'listaClientes',
         emailUsuario: string
     }
 
     return {
-        rows: array de clientes
+        sucesso: true || false,
+        clientes: Array || null
+        erro: null || PDOException error
     }
 }
 
-{   ## verificaPermissao ## método GET 
-    
+{   ## pesquisaCliente ## método GET
+
     {
-        email: string
+        funcao: 'pesquisaCliente',
+        emailUsuario: string,
+        clientePesquisado: string
     }
 
     return {
-        permissao: json
-    }
-}
-
-{   ## listaUsuarios ## método GET
-    {
-        return {
-            usuario: array
-        }
+        sucesso: true || false,
+        clientes: Array || null
+        erro: null || PDOException error
     }
 }
 
 {   ## atualizarAtivoCliente ## método PUT
 
     {
+        funcao: 'atualizarAtivoCliente',
         idCliente: int
     }
 
@@ -88,15 +91,16 @@
 {   ## atualizaCliente  ## método PUT
 
     {
-        nome: string
-        cpf: string
-        rg: string
-        email: string
-        telefone1: string
-        telefone2: string
-        data_nasc: string
-        enderecos: array
-        id: int
+        funcao: 'atualizaCliente',
+        nome: string,
+        cpf: string,
+        rg: string,
+        email: string,
+        telefone1: string,
+        telefone2: string,
+        data_nasc: string,
+        enderecos: array,
+        idCliente: int
     }
 
     return{

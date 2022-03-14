@@ -4,39 +4,31 @@ $(document).ready(async function () {
     if (parametrosURL.get('desconectado')) toastPersonalizado("Desconectado com sucesso", "sucesso");
 });
 
-$("#valid-login").on('click', (e) => {
+$("#valid-login").on('click', async (e) => {
     e.preventDefault()
 
-    $.ajax({
-        method: 'post',
-        url: '../../api/usuario/index.php',
-        data: {
-            funcao: 'logar',
-            email: document.getElementById("email").value,
-            senha: document.getElementById("senha").value
-        },
-        success: (data) => {
-            if (data.conectado) {
-                // Transformar o objeto em string e salvar em localStorage
-                localStorage.setItem('usuario', data.usuario);
+    //adiociona animação de carregando no botão de entrar
+    $("#valid-login").append("<span id='carregando' class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>");
 
-                toastPersonalizado("Bem vindo!", "sucesso")
-
-                setTimeout(() => {
-                    window.location.href = "../cad_cliente/index.html";
-                }, 2000);
-            } else {
-                toastPersonalizado("Usuário e/ou senha incorreto", "erro")
-            }
-        },
-        error: (data) => {
-            console.log('erro');
-            console.log(data)
-        }
+    let email = document.getElementById("email").value
+    let senha = document.getElementById("senha").value
+    const response = await $.ajax({
+        method: "GET",
+        url: `../../api/usuario/index.php?funcao=logar&email=${email}&senha=${senha}`,
     });
+
+    if (response.conectado) {
+        //salvar em localStorage
+        localStorage.setItem('usuario', response.usuario);
+        window.location.href = "../cad_cliente/index.html?saudacao=true";
+
+    } else {
+        toastPersonalizado("Usuário e/ou senha incorreto", "erro")
+        $("span").remove("#carregando");
+    }
 })
 
-$("#salvar-novo-cadastro").on('click', (e) => {
+$("#salvar-novo-cadastro").on('click', async (e) => {
     e.preventDefault();
 
     let email = document.getElementById("novo-email").value;
@@ -46,34 +38,27 @@ $("#salvar-novo-cadastro").on('click', (e) => {
 
     if (validaSenha(senha1, senha2)) {
 
-        $.ajax({
-            method: 'post',
-            url: '../../api/usuario/index.php',
+        const response = await $.ajax({
+            method: "POST",
+            url: "../../api/usuario/index.php",
             data: {
-                funcao: 'cadastrarUsuario',
+                funcao: "cadastrarUsuario",
                 email: email,
                 senha: senha1,
                 nome: nome
-            },
-            success: (data) => {
-                console.log(data)
-
-                //cadastro com sucesso!
-                if (data.cadastrado) {
-                    toastPersonalizado("Cadastro realizado com sucesso!", "sucesso")
-                    return
-                }
-
-                //caso email ja esteja cadastrado no banco de dados
-                if (data.erro['errorInfo'][2].includes("Duplicate entry")) {
-                    toastPersonalizado("Email já cadastrado no sistema", "erro")
-                }
-
-            },
-            error: (data) => {
-                console.log(data)
             }
         });
+
+        //cadastro com sucesso!
+        if (response.cadastrado) {
+            toastPersonalizado("Cadastro realizado com sucesso!", "sucesso")
+            return
+        }
+
+        //caso email ja esteja cadastrado no banco de dados
+        if (response.erro['errorInfo'][2].includes("Duplicate entry")) {
+            toastPersonalizado("Email já cadastrado no sistema", "erro")
+        }
     }
 })
 
@@ -82,8 +67,8 @@ const validaSenha = (s1, s2) => {
         toastPersonalizado("As senhas não coincidem, por favor verifique!", "erro")
 
         document.getElementById("novo-senha1").value = '';
-        document.getElementById("novo-senha1").focus();
         document.getElementById("novo-senha2").value = '';
+        document.getElementById("novo-senha1").focus();
         return false
     }
     return true

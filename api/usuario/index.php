@@ -20,11 +20,11 @@ if ($_GET["funcao"] == "verificaPermissao") {
     }
 }
 
-####################################### POST ####################################### 
-if ($_POST["funcao"] == "logar") {
+if ($_GET["funcao"] == "logar") {
+    sleep(2); // adicionado pausa no código para simular um carregando na tela de login
 
-    $email = $_POST["email"];
-    $senha = $_POST["senha"];
+    $email = $_GET["email"];
+    $senha = $_GET["senha"];
 
     $sql = "SELECT * FROM usuario WHERE email = '$email'";
     $dados = $conn->query($sql);
@@ -37,6 +37,17 @@ if ($_POST["funcao"] == "logar") {
     }
 }
 
+if ($_GET["funcao"] == "listaUsuarios") {
+
+    $sql = "SELECT * FROM usuario";
+
+    $dados = $conn->query($sql);
+    $rows = $dados->fetchAll();
+
+    echo json_encode($rows);
+}
+
+####################################### POST ####################################### 
 if ($_POST["funcao"] == "cadastrarUsuario") {
     try {
         $email = $_POST["email"];
