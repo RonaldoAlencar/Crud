@@ -1,0 +1,57 @@
+nome do banco de dados: crud
+
+=========== TABELAS ===========
+
+CREATE TABLE `clientes` (
+  `id` int(11) NOT NULL,
+  `data_inc` datetime NOT NULL DEFAULT current_timestamp(),
+  `nome` varchar(30) NOT NULL,
+  `cpf` varchar(20) DEFAULT NULL,
+  `rg` varchar(20) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `data_nascimento` date DEFAULT NULL,
+  `telefone1` varchar(30) DEFAULT NULL,
+  `telefone2` varchar(30) DEFAULT NULL,
+  `ativo` int(1) NOT NULL DEFAULT 1,
+  `idvendedor` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cpf` (`cpf`);
+
+===========
+
+CREATE TABLE `cliente_endereco` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `idcliente` int(11) DEFAULT NULL,
+  `logradouro` varchar(255) DEFAULT NULL,
+  `localidade` varchar(50) DEFAULT NULL,
+  `uf` char(2) DEFAULT NULL,
+  `bairro` varchar(50) DEFAULT NULL,
+  `complemento` varchar(255) DEFAULT NULL,
+  `cep` varchar(11) DEFAULT NULL,
+  `numero` varchar(10) DEFAULT NULL,
+  `ativo` int(11) NOT NULL DEFAULT 1,
+  `principal` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `cliente_endereco`
+  ADD PRIMARY KEY (`id`);
+
+===========
+
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `senha` varchar(255) NOT NULL,
+  `nome` varchar(30) NOT NULL,
+  `excluir` int(1) NOT NULL DEFAULT 0,
+  `editar` int(1) NOT NULL DEFAULT 0,
+  `cadastrar` int(1) NOT NULL DEFAULT 0,
+  `adm` int(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
