@@ -1,6 +1,9 @@
 $(document).ready(function () {
-    if (!localStorage.getItem("usuario")) {
-        window.location.href = "../login/index.html";
+    //se não estiver na página de login, verifica o usuario conectado
+    if (window.location.href != "http://localhost/Crud/pages/login/index.html") {
+        if (!localStorage.getItem("usuario")) {
+            window.location.href = "../login/index.html";
+        }
     }
 })
 
