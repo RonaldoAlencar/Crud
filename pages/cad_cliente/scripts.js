@@ -128,6 +128,7 @@ $("#form-cadastro-cliente").bootstrapValidator({
                      Cadastrado com sucesso!
                  </div>  
              `);
+             
             //Removendo a div de endereços
             var node = document.getElementById("endereco-cliente");
             if (node.parentNode) node.parentNode.removeChild(node);

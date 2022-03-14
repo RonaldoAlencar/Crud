@@ -326,7 +326,9 @@ $("#form-altera-endereco-edit-cliente").bootstrapValidator({
 })
 
 //insere endereços na tela
-const atualizaEnderecoTela = (enderecos) => {
+const atualizaEnderecoTela = async (enderecos) => {
+    //valida permissoes para exibição de botões
+    const permissao = await verificaPermissao();
 
     //percorre enderecos, começa no array 1
     for (var i = 0; i <= enderecos[1].length - 1; i++) {
@@ -347,10 +349,10 @@ const atualizaEnderecoTela = (enderecos) => {
             Rua: ${logradouro} N: ${numero}, Bairro: ${bairro}, Cidade: ${localidade} - ${uf}, CEP: ${cep}, Complemento: ${complemento}
             <br />${principal ? "<strong>Principal</strong>" : "Secundário"} 
             <div class="d-flex flex-row-reverse bd-highlight mt-0">
-                <a type='button' id='btn-delete' class='btn btn-danger btn-sm' onclick='removeEnderecoCliente(event.target, ${principal})'>
+                <a ${permissao.excluir ? '' : 'hidden'} type='button' id='btn-delete' class='btn btn-danger btn-sm' onclick='removeEnderecoCliente(event.target, ${principal})'>
                     Remover
                 </a>
-                <a type='button' id='btn-edit' class='btn btn-info btn-sm' onclick='alteraEndCliente(${JSON.stringify(enderecos[1][i])})' data-bs-toggle='modal' data-bs-target='#alteraEnderecoModal'>
+                <a ${permissao.editar ? '' : 'hidden'} type='button' id='btn-edit' class='btn btn-info btn-sm' onclick='alteraEndCliente(${JSON.stringify(enderecos[1][i])})' data-bs-toggle='modal' data-bs-target='#alteraEnderecoModal'>
                     Editar
                 </a>
             </div>
@@ -360,8 +362,6 @@ const atualizaEnderecoTela = (enderecos) => {
         //adiciona no html
         $("#address-client").append(tr_str);
     }
-    //valida permissoes para exibição de botões
-    verificaPermissao();
 }
 
 //seleciona o id do endereço do cliente a ser apagado apos confirmação
@@ -398,19 +398,5 @@ const verificaPermissao = async () => {
         dataType: "JSON"
     });
 
-    //verifica permissão de editar, se não esconde botões
-    if (!permissao.editar) {
-        document.getElementById("btn-edit").setAttribute("hidden", "")
-        document.getElementById("atualizarCliente").setAttribute("hidden", "")
-        document.getElementById("novoEndereco").setAttribute("hidden", "")
-    }
-    if (!permissao.excluir) {
-        document.getElementById("btn-delete").setAttribute("hidden", "")
-    }
-    if (permissao.adm) {
-        $("#navbar-nav").append(`
-            <a href="../list_usuarios/index.html" class="nav-item nav-link">Usuarios do sistema</a>
-        `)
-    }
-
+    return permissao;
 }

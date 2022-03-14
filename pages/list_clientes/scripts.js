@@ -24,7 +24,7 @@ $(document).ready(async function () {
   const { clientes } = await $.ajax({
     url: `../../api/cliente/index.php?funcao=listaClientes&emailUsuario=${localStorage.getItem('usuario')}`,
     method: "get",
-    dataType: 'JSON'
+    dataType: "JSON"
   });
 
   constroiTabela(clientes, permissao);
