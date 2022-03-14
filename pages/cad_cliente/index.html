@@ -13,16 +13,25 @@
 
 <body>
 
-    <ul id="nav-tabs" class="nav nav-tabs" style="background-color: #e4e4e4;">
-        <li class="nav-item">
-            <a class="nav-link active text-dark">Cadastro de clientes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="../list_clientes/index.html">Listagem de clientes</a>
-        </li>
-        <button class="btn btn-danger" onclick="desconectar()"
-            style="position: absolute; z-index: 99; right: 10px; margin-top: 1.5px;">Desconectar</button>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                CRUD-KaBuM!
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav" id="navbar-nav">
+                    <a href="../cad_cliente/index.html" class="nav-item nav-link active">Cadastro de clientes</a>
+                    <a href="../list_clientes/index.html" class="nav-item nav-link">Exibir clientes</a>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    <button  class="btn btn-danger" onclick="desconectar()"class="nav-item nav-link">Desconectar</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <div class="container align-self-stretch">
         <form id="form-cadastro-cliente" class="card p-4"
@@ -99,9 +108,9 @@
     <div class="modal fade" id="modalEndereco" tabindex="-1" aria-labelledby="modalEndereco" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEndereco">Cadastro de endereço</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-dark bg-gradient">
+                    <h5 class="modal-title text-light" id="modalEndereco">Cadastro de endereço</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="color: #e4e4e4;" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="form-endereco-cliente">
@@ -147,7 +156,7 @@
                         </div>
 
                         <div class="col-md-12">
-                            <label for="complemento" class="col-form-label">complemento</label>
+                            <label for="complemento" class="col-form-label">Complemento</label>
                             <textarea class="form-control" name="complemento" id="complemento"></textarea>
                         </div>
 

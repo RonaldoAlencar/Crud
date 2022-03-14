@@ -15,11 +15,9 @@ $(document).ready(async function () {
   permissoes = permissao;
   //libera acessos a usuarios se usuario conectado for adm
   if (permissao.adm) {
-    $("#nav-tabs").append(`
-            <li class="nav-item">
-              <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
-            </li>
-        `)
+    $("#navbar-nav").append(`
+      <a href="../list_usuarios/index.html" class="nav-item nav-link">Usuarios do sistema</a>
+    `);
   }
 
   //cria lista de usuarios na tela

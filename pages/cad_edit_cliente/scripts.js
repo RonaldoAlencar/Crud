@@ -408,10 +408,8 @@ const verificaPermissao = async () => {
         document.getElementById("btn-delete").setAttribute("hidden", "")
     }
     if (permissao.adm) {
-        $("#nav-tabs").append(`
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="../list_usuarios/index.html">Usuarios do sistema</a>
-        </li>
+        $("#navbar-nav").append(`
+            <a href="../list_usuarios/index.html" class="nav-item nav-link">Usuarios do sistema</a>
         `)
     }
 

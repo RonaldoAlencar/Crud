@@ -18,19 +18,27 @@
 
 <body>
 
-    <ul id="nav-tabs" class="nav nav-tabs" style="background-color: #e4e4e4;">
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="../cad_cliente/index.html">Cadastro de clientes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="../list_clientes/index.html">Listagem de clientes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark active" href="../list_usuarios/index.html">Usuarios do sistema</a>
-        </li>
-        <button class="btn btn-danger" onclick="desconectar()"
-            style="position: absolute; z-index: 99; right: 10px; margin-top: 1.5px;" href="#">Desconectar</button>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand"> 
+                CRUD-KaBuM!
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav" id="navbar-nav">
+                    <a href="../cad_cliente/index.html" class="nav-item nav-link">Cadastro de clientes</a>
+                    <a href="../list_clientes/index.html" class="nav-item nav-link">Exibir clientes</a>
+                    <a href="../list_usuarios/index.html" class="nav-item nav-link active">Usuarios do sistema</a>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    <button class="btn btn-danger" onclick="desconectar()"
+                        class="nav-item nav-link">Desconectar</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <div class="container d-flex justify-content-center card mt-2">
         <div style="width: 100%;">
@@ -60,9 +68,9 @@
     <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuario" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Permissões</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-dark bg-gradient">
+                    <h5 class="modal-title text-light" id="modalEndereco">Permissões</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="color: #e4e4e4;" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
@@ -106,13 +114,7 @@
             </div>
         </div>
     </div>
-
-    <footer style="position: absolute; bottom: 0;">
-        <a href="https://github.com/RonaldoAlencar">
-            <img src="https://www.pngplay.com/wp-content/uploads/12/GitHub-PNG-HD-Photos.png" height="40px"
-                width="100px" alt="Meu GitHub" srcset="">
-        </a>
-    </footer>
+    
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="

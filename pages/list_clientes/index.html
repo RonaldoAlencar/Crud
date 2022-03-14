@@ -17,16 +17,25 @@
 
 <body>
 
-    <ul class="nav nav-tabs" id="nav-tabs" style="background-color: #e4e4e4;">
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="../cad_cliente/index.html">Cadastro de clientes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active text-dark" href="#">Listagem de clientes</a>
-        </li>
-        <button class="btn btn-danger" onclick="desconectar()"
-            style="position: absolute; z-index: 99; right: 10px; margin-top: 1.5px;" href="#">Desconectar</button>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                CRUD-KaBuM!
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav" id="navbar-nav">
+                    <a href="../cad_cliente/index.html" class="nav-item nav-link">Cadastro de clientes</a>
+                    <a href="../list_clientes/index.html" class="nav-item nav-link active">Exibir clientes</a>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    <button  class="btn btn-danger" onclick="desconectar()"class="nav-item nav-link">Desconectar</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <div class="container d-flex justify-content-center card mt-2">
         <div style="width: 100%;">
