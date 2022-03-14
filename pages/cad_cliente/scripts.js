@@ -115,7 +115,7 @@ $("#form-cadastro-cliente").bootstrapValidator({
                 emailUsuario: localStorage.getItem('usuario')
             }
         });
-
+        console.log(response)
         if (response.erro && response.erro['errorInfo'][2].includes("Duplicate entry")) {
             toastPersonalizado("CPF inserido já possui cadastro no sistema!", "erro")
             return

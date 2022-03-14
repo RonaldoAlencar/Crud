@@ -9,7 +9,7 @@ $(document).ready(function () {
 
 const toastPersonalizado = (mensagem, tipo) => {
     let cor
-    if (tipo == "sucesso") cor = "#00CC66"; //cor verde
+    if (tipo == "sucesso") cor = "#8FCE00"; //cor verde
     if (tipo == "erro") cor = "#F44336"; //cor vermelha
     if (tipo == "aviso") cor = "#E8DB0B"; //cor amarela
 
@@ -23,6 +23,7 @@ const toastPersonalizado = (mensagem, tipo) => {
         stopOnFocus: true,
         style: {
             background: cor,
+            color: tipo == "sucesso" ? "#000" : "#fff"
         },
     }).showToast();
 }

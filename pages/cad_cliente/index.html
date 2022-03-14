@@ -42,7 +42,7 @@
                 <div class="form-group pb-3">
                     <label for="nome">Nome</label>
                     <input type="text" class="form-control" id="nome"
-                        name="nome" required>
+                        name="nome" maxlength="255" required>
                 </div>
 
                 <div class="row pb-3">
@@ -61,7 +61,7 @@
                 <div class="form-group pb-3">
                     <label for="email">E-mail</label>
                     <input required type="email" class="form-control"
-                        id="email" name="email">
+                        id="email" maxlength="50" name="email">
                 </div>
 
                 <div class="row pb-3">
@@ -127,37 +127,37 @@
 
                         <div class="col-md-12">
                             <label for="logradouro" class="col-form-label">Logradouro</label>
-                            <input class="form-control" name="logradouro" id="logradouro"></input>
+                            <input maxlength="255" class="form-control" name="logradouro" id="logradouro"></input>
                         </div>
 
                         <div class="row">
 
                             <div class="col-md-10">
                                 <label for="bairro" class="col-form-label">Bairro</label>
-                                <input class="form-control" name="bairro" id="bairro"></input>
+                                <input maxlength="50" class="form-control" name="bairro" id="bairro"></input>
                             </div>
 
                             <div class="col-md-2">
                                 <label for="numero" class="col-form-label">N</label>
-                                <input class="form-control" name="numero" id="numero"></input>
+                                <input maxlength="5" class="form-control" name="numero" id="numero"></input>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-10">
                                 <label for="cidade" class="col-form-label">Cidade</label>
-                                <input class="form-control" name="cidade" id="cidade"></input>
+                                <input maxlength="50" class="form-control" name="cidade" id="cidade"></input>
                             </div>
 
                             <div class="col-md-2">
                                 <label for="uf" class="col-form-label">UF</label>
-                                <input class="form-control" name="uf" id="uf"></input>
+                                <input maxlength="2" class="form-control" name="uf" id="uf"></input>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <label for="complemento" class="col-form-label">Complemento</label>
-                            <textarea class="form-control" name="complemento" id="complemento"></textarea>
+                            <textarea maxlength="255" class="form-control" name="complemento" id="complemento"></textarea>
                         </div>
 
                         <div class="modal-footer">

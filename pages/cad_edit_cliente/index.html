@@ -26,7 +26,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav" id="navbar-nav">
                     <a href="../cad_cliente/index.html" class="nav-item nav-link">Cadastro de clientes</a>
-                    <a href="../cad_edit_cliente/index.html" class="nav-item nav-link">Exibir clientes</a>
+                    <a href="../list_clientes/index.html" class="nav-item nav-link">Exibir clientes</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     <button  class="btn btn-danger" onclick="desconectar()"class="nav-item nav-link">Desconectar</button>
@@ -43,7 +43,7 @@
                     <h1>Editar cliente</h1>
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
+                        <input type="text" maxlength="255" class="form-control" id="nome" name="nome" required>
                     </div>
 
                     <div class="row">
@@ -60,7 +60,7 @@
 
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input required type="email" class="form-control" id="email" name="email">
+                        <input required maxlength="50" type="email" class="form-control" id="email" name="email">
                     </div>
 
                     <div class="row">
