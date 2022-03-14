@@ -8,7 +8,7 @@ $(document).ready(async function () {
 
   //cria lista de usuarios na tela
   const response = await $.ajax({
-    url: `../../api/cliente/index.php?funcao=listaUsuarios`,
+    url: `../../api/usuario/index.php?funcao=listaUsuarios`,
     method: "get",
     dataType: 'JSON',
   });
